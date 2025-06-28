@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giovanni Bocchi, Ph.D.</title>
+<style>
+/* Reset e Variabili CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --primary-color: #00d2ff;
+    --secondary-color: #3a7bd5;
+    --accent-color: #ff6b6b;
+    --bg-dark: #0a0a0a;
+    --bg-darker: #050505;
+    --text-light: #ffffff;
+    --text-gray: #b0b0b0;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Animated background */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at 20% 80%, rgba(0, 210, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+}
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+}
+
+/* Navigation */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+nav.scrolled {
+    background: rgba(10, 10, 10, 0.95);
+    box-shadow: 0 2px 20px rgba(0, 210, 255, 0.2);
+}
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient);
+    transition: width 0.3s ease;
+}
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+.hero-content { /* Added display flex and align-items to center content vertically */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.hero-photo {
+    width: 200px; /* Adjust size as needed */
+    height: 200px; /* Adjust size as needed */
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    margin-bottom: 2rem; /* Space between photo and title */
+    border: 5px solid var(--primary-color); /* Optional: add a border */
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.5); /* Optional: add a subtle shadow */
+    animation: fadeInUp 1s ease-out; /* Apply existing animation */
+}
+.hero-content h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeInUp 1s ease-out;
+}
+.hero-content .subtitle {
+    font-size: 1.5rem;
+    color: var(--text-gray);
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+.hero-content .tagline {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--gradient);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    animation: fadeInUp 1s ease-out 0.9s both;
+    box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+}
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 210, 255, 0.4);
+}
+
+/* New button style for projects/hobbies */
+.card-button {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    background: var(--secondary-color); /* A different color for distinction */
+    border: none;
+    border-radius: 25px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    margin-top: 1rem; /* Space from content above */
+    align-self: flex-start; /* Aligns button to the left in flex column */
+}
+.card-button:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2);
+}
+
+/* Sections */
+section {
+    padding: 5rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* About Section */
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    align-items: center;
+}
+.about-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+.certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.skill-item {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+.skill-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
+    border-color: var(--primary-color);
+}
+.skill-item h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Projects Section */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+.project-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative; /* Aggiungi questa proprietà */
+    display: flex;
+    flex-direction: column;
+}
+.project-card::before { /* Aggiungi questo blocco */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+.project-card:hover::before { /* Aggiungi questo blocco */
+    left: 100%;
+}
+.project-card:hover { /* Modifica questo blocco */
+    transform: translateY(-10px) scale(1.02); /* Modificato */
+    box-shadow: 0 20px 40px rgba(0, 210, 255, 0.2); /* Modificato */
+    border-color: var(--primary-color);
+}
+.project-image-container {
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+}
+.project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+.project-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+.project-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+.project-content p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+    align-items: flex-end;
+    margin-bottom: 1rem; /* Space between tags and button */
+}
+.tech-tag {
+    background: rgba(0, 210, 255, 0.2);
+    color: var(--primary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    border: 1px solid var(--primary-color);
+}
+
+/* Contact Section */
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.contact-form input,
+.contact-form textarea {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    color: var(--text-light);
+    font-family: inherit;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 210, 255, 0.2);
+}
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+.contact-item:hover {
+    border-color: var(--primary-color);
+    transform: translateX(10px);
+}
+.contact-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Footer */
+footer {
+    background: var(--bg-darker);
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Timeline Styles */
+.timeline-job {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#work-experience-timeline {
+    max-width: 1400px; /* Imposta a 1000px solo per questa timeline */
+}
+
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background: var(--gradient);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+    border-radius: 2px;
+}
+.timeline-item {
+    padding: 20px 40px;
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: -10px;
+    background: var(--primary-color);
+    border: 4px solid var(--bg-dark);
+    top: 30px;
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 0 0 4px var(--primary-color);
+}
+.timeline-left {
+    left: 0;
+}
+.timeline-right {
+    left: 50%;
+}
+.timeline-right::after {
+    left: -10px;
+}
+.timeline-content {
+    padding: 2rem;
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+}
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 210, 255, 0.2);
+    border-color: var(--primary-color);
+}
+.timeline-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+.timeline-content .institution {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+.timeline-content .date {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.timeline-content .date::before {
+    content: '📅';
+}
+.timeline-content .description {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+.timeline-content .highlights {
+    list-style: none;
+    padding: 0;
+}
+.timeline-content .highlights li {
+    padding: 0.3rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+.timeline-content .highlights li::before {
+    content: '▸';
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+/* Hobbies Section */
+.hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+.hobby-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between; /* Distribute space */
+    align-items: center; /* Center horizontally */
+}
+.hobby-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+.hobby-card:hover::before {
+    left: 100%;
+}
+.hobby-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 210, 255, 0.2);
+    border-color: var(--primary-color);
+}
+.hobby-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+    filter: grayscale(0);
+    transition: all 0.3s ease;
+}
+.hobby-card:hover .hobby-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+.hobby-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+.hobby-card p {
+    color: var(--text-gray);
+    line-height: 1.6;
+    flex-grow: 1; /* Allow paragraph to take available space */
+    margin-bottom: 1rem; /* Space before button */
+}
+
+/* Responsive timeline */
+@media (max-width: 768px) {
+    .timeline::after {
+        left: 31px;
+    }
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+    .timeline-item::after {
+        left: 21px;
+    }
+    .timeline-right {
+        left: 0%;
+    }
+    .hobbies-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .hero-photo { /* Adjust photo size for smaller screens */
+        width: 150px;
+        height: 150px;
+    }
+}
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    .hero-content .subtitle {
+        font-size: 1.2rem;
+    }
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+<div class="bg-animation" id="bgAnimation"></div>
+<nav id="navbar">
+    <div class="nav-container">
+        <div class="logo">Giovanni Bocchi</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About me</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#experience">Experiences</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#hobbies">Miscellanea</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section id="home" class="hero">
+    <div class="hero-content">
+        <img src="static/gbocchi1.png" alt="Giovanni Bocchi" class="hero-photo fade-in">
+        <h1>Giovanni Bocchi, Ph.D. </h1>
+        <p class="subtitle">Data Scientist</p>
+        <p class="tagline">Some people can read War and Peace and come away thinking it's a simple adventure story. Others can read the ingredients on a chewing gum wrapper and unlock the secrets of the universe.</p>
+        <a href="#projects" class="cta-button">Explore my projects</a>
+    </div>
+</section>
+
+<section id="about">
+    <h2 class="section-title fade-in">About me</h2>
+    <div class="about-content">
+        <div class="about-text fade-in">
+            <p>Data Scientist specializing in industrial analytics, machine learning, and production optimization.
+I design and deploy data-driven solutions that turn complex industrial data into real-time insights, predictive capabilities, and measurable business value. My expertise lies in building robust machine learning models that forecast equipment behavior, detect anomalies, and optimize production workflows.
+Beyond structured data, I integrate large language models (LLMs) to process and analyze unstructured industrial information—such as maintenance logs, shift reports, and technical documentation.
+Whether improving operational efficiency, reducing unplanned downtime, or enabling smarter decision-making on the shop floor, I’m passionate about using data and AI to drive digital transformation in industry.</p>
+        </div>
+        <div class="skills-grid fade-in">
+            <div class="skill-item">
+                <h3>🐍 Programming</h3>
+                <p>Python, R, Fortran, C++, Linux, Mathematica, Matlab</p>
+            </div>
+            <div class="skill-item">
+                <h3>🧠 AI & Machine Learning</h3>
+                <p>scikit-learn, TensorFlow, Keras, PyTorch, OpenCV, mediapipe</p>
+            </div>
+            <div class="skill-item">
+                <h3>📈 Data Visualization</h3>
+                <p>matplotlib, seaborn, plotly, altair, ggplot2</p>
+            </div>
+            <div class="skill-item">
+                <h3>🗄️ Database</h3>
+                <p>SQL, PostgreSQL, Chroma, Qdrant, MongoDB</p>
+            </div>
+            <div class="skill-item">
+                <h3>🗣️ LLM & NLP</h3>
+                <p>OpenAI, Langchain, Ollama, Anthropic, NLTK, HuggingFaces</p>
+            </div>
+            <div class="skill-item">
+                <h3>📱 Mobile App</h3>
+                <p>Dart, Flutter</p>
+            </div>
+            <div class="skill-item">
+                <h3>🏢 DevOps & Collaboration</h3>
+                <p>Git, GitHub, Bitbucket, Docker, Heroku, Trello, Jenkins</p>
+            </div>
+            <div class="skill-item">
+                <h3>🌐 Web Development</h3>
+                <p>HTML, CSS, JsReport, Streamlit, Dash, R, Shiny</p>
+            </div>
+            <div class="skill-item">
+                <h3>🖥️ BI & Reporting</h3>
+                <p>Spotfire, Power BI, Streamlit, QlikSense, Minitab, QtiPlot, OriginPro</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="education">
+    <h2 class="section-title fade-in">Education</h2>
+    <div class="timeline">
+        <div class="timeline-item timeline-left fade-in">
+            <div class="timeline-content">
+                <h3>Doctor of Phylosophy<br>Nuclear Physics</h3>
+                <div class="institution">Università degli Studi di Milano</div>
+                <div class="date">February 2017</div>
+            </div>
+        </div>
+        <div class="timeline-item timeline-right fade-in">
+            <div class="timeline-content">
+                <h3>Mastger Degree</h3>
+                <div class="institution">Università degli Studi di Milano</div>
+                <div class="date">April 2013</div>
+                <ul class="highlights">
+                    <li>110/110 cum laude</li>
+                </ul>
+            </div>
+        </div>
+        <div class="timeline-item timeline-left fade-in">
+            <div class="timeline-content">
+                <h3>Bachelor Degree</h3>
+                <div class="institution">Università degli Studi di Milano</div>
+                <div class="date">April 2010</div>
+                <ul class="highlights">
+                    <li>105/110</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="experience">
+    <h2 class="section-title fade-in">Work Experience</h2>
+    <div class="timeline" id="work-experience-timeline">
+        <div class="timeline-item timeline-left fade-in">
+            <div class="timeline-content">
+                <h3>Head of Data Science and AI Researcher</h3>
+                <div class="institution">Kiwi Data Science, Milano, Italia</div>
+                <div class="date">Jan 2019 - Present</div>
+                <div class="description">
+                    As the Head of Data Science, I lead a team to transform industrial data into actionable insights, driving operational efficiency and business growth. With expertise in machine learning and predictive modeling, I oversee advanced analytics projects, ensuring alignment with business goals and solving critical manufacturing challenges.
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item timeline-right fade-in">
+            <div class="timeline-content">
+                <h3>Data Scientist</h3>
+                <div class="institution">Kiwi Data Science, Milano, Italia</div>
+                <div class="date">Jan 2017 - Dec 2018</div>
+                <div class="description">
+                    As a Data Scientist, I specialize in industrial data analysis, leveraging machine learning and predictive models to enhance operations and drive growth. My focus is on extracting meaningful insights from complex datasets to forecast trends, identify patterns, and solve real-world manufacturing problems.
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item timeline-left fade-in">
+            <div class="timeline-content">
+                <h3>Minitab Trainer</h3>
+                <div class="institution">Minitab Italia, Milano, Italia</div>
+                <div class="date">Jan 2017 - Dec 2018</div>
+                <div class="description">
+                    As an official Minitab trainer, I have had the valuable opportunity to collaborate with a diverse range of organizations, contributing my expertise to various projects. This role has enabled me to gain extensive experience in adapting tools and methodologies to meet the specific needs and challenges of each unique project and client.
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item timeline-right fade-in">
+            <div class="timeline-content">
+                <h3>PhD Student</h3>
+                <div class="institution">Università degli Studi di Milano, Physics Department, Milan, Italy</div>
+                <div class="date">Jan 2014 - Dec 2016</div>
+                <div class="description">
+                    My activity is devoted to the study of nuclear structure, having the gamma spectroscopy as main tool and focus. This research is set within the framework of wide international collaborations. Main topic is the study of shell structure and collective modes in both stable and exotic systems.
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item timeline-left fade-in">
+            <div class="timeline-content">
+                <h3>Assistant professor</h3>
+                <div class="institution">Università degli Studi di Milano, Department of Biology, Milan, Italy</div>
+                <div class="date">2013 - 2016</div>
+                <div class="description">
+                    As an Assistant Professor at the University of Milan's Department of Biology, I teach and tutor the 'Physics and Physics Laboratory' course in the bachelor's biology program. I deliver lectures, oversee lab sessions, and support students in understanding the intersection of physics and biology.
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item timeline-right fade-in">
+            <div class="timeline-content">
+                <h3>Private Teacher</h3>
+                <div class="institution">Freelance</div>
+                <div class="date">Jan 2005 - Present</div>
+                <div class="description">
+                    As a private tutor of mathematics and physics, I provide personalized instruction to middle school, high school, and university students. With a deep understanding of both subjects, I tailor my teaching methods to meet each student's unique learning needs.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="projects">
+    <h2 class="section-title fade-in">Personal Projects</h2>
+    <div class="projects-grid">
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/camera.png" alt="Immagine Camera Bricks" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Camera Bricks</h3>
+                <p>Transform any generic photo into a vibrant, eye-catching Brick picture. With just a few simple taps, users can upload their photo and choose from various brick format, size and themed effects.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">OpenCV</span>
+                    <span class="tech-tag">Docker</span>
+                </div>
+                <a href="https://camerabricks.streamlit.app" class="card-button" target="_blank">Live Demo</a>
+            </div>
+        </div>
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/webtrack.png" alt="Immagine Face Tracking" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Face Tracking</h3>
+                <p>A Python-based application designed to enhance virtual meetings by providing real-time face tracking capabilities. The tool leverages computer vision to identify and follow faces during conference calls.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Sklearn</span>
+                    <span class="tech-tag">OpenCV</span>
+                    <span class="tech-tag">Mediapipe</span>
+                </div>
+                <a href="https://github.com/giova86/Python-webcamTracking" class="card-button" target="_blank">GitHub</a>
+            </div>
+        </div>
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/lis.png" alt="Immagine Alfabeto LIS" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Alfabeto LIS</h3>
+                <p>A machine learning model that detects the right hand, extracts the main features, and predicts the corresponding sign in Italian Sign Language based on hand shape.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Sklearn</span>
+                    <span class="tech-tag">OpenCV</span>
+                    <span class="tech-tag">Mediapipe</span>
+                </div>
+                <a href="https://giova86-streamlit-lis-main-develop-luv386.streamlit.app" class="card-button" target="_blank">Live Demo</a>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/maxresdefault-6.jpg" alt="Immagine Dr. Strange" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Dr. Strange</h3>
+                <p>Brings the magical world of Dr. Strange to life by allowing users to generate and display real-time, interactive shields similar to those seen in the Dr. Strange movies.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Sklearn</span>
+                    <span class="tech-tag">SVM</span>
+                    <span class="tech-tag">OpenCV</span>
+                </div>
+                <a href="https://github.com/giova86/Python-DrStrangeShield" class="card-button" target="_blank">GitHub</a>
+            </div>
+        </div>
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/angular.png" alt="Immagine Angular Correlation" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Angular Correlation</h3>
+                <p>Analyzes and simulates the directional relationship between two emitted gamma rays in nuclear decay processes, visualizing the complex physics behind these phenomena.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">Nuclear Physics</span>
+                    <span class="tech-tag">Plotly</span>
+                </div>
+                <a href="https://angularcorrelation.streamlit.app" class="card-button" target="_blank">Live Demo</a>
+            </div>
+        </div>
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/passapronto.png" alt="Immagine PassaPronto" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>PassaPronto</h3>
+                <p>A practical solution that monitors real-time availability of passport appointment slots on the Italian State Police website, sending notifications via Telegram or email.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">Telegram Bot API</span>
+                </div>
+                <a href="https://www.kiwidatascience.com/showcase/passapronto/" class="card-button" target="_blank">The project</a>
+            </div>
+        </div>
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/wantedop.png" alt="Immagine One Piece - Wanted" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>One Piece - Wanted</h3>
+                <p>Web app that lets users create custom One Piece-style wanted posters with their own photo and bounty.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">openCV</span>
+                </div>
+                <a href="https://onepiecewanted.streamlit.app" class="card-button" target="_blank">Live Demo</a>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/wantedopMobile.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Wanted OP - Mobile Application</h3>
+                <p>Mobile app for iPhone/Android to create personalized One Piece wanted posters with images, names, and custom rewards.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/wordsinvaders.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Words Invaders - Mobile Application</h3>
+                <p>Mobile game like Space Invaders where you're attacked by falling words — shoot them before they hit you!</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/tictacdrop.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Tic Tac Drop - Mobile Application</h3>
+                <p>Advanced tic-tac-toe app where pieces disappear after a few turns, adding a strategic twist to classic gameplay.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/magicnumber.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Magic Number - Mobile Application</h3>
+                <p>Digital version of the classic “guess the number” game — challenge yourself or others to find the secret number!</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/magictimer.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Magic Timer - Mobile Application</h3>
+                <p>Magic timer app that always stops at a fixed sum of minutes, seconds, and milliseconds — surprising and puzzling!</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/magiccalculator.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Pi Book  - Mobile Application</h3>
+                <p>Calculator app that finds the position of number sequences within Pi’s infinite decimal expansion — fun for math lovers!</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/tokenizer.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>LLM Tokenizer</h3>
+                <p>A TKinter app that calculates the number of tokens of a sentence.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/magic_calculator.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Magic Calculator  - Mobile Application</h3>
+                <p>Magical calculator app that always returns the same result, no matter what you enter — a mind-bending trick tool!</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card fade-in">
+            <div class="project-image-container">
+                <img src="static/playlist_downloader.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+            </div>
+            <div class="project-content">
+                <h3>Playlist Downloader</h3>
+                <p>Web app to download playlists from YouTube or Spotify quickly, easily, and with the best format and quality options.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Fast-API</span>
+                    <span class="tech-tag">Streamlit</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="certifications">
+  <h2 class="section-title fade-in">Certifications</h2>
+
+<div class="certs-grid fade-in">
+  <div class="skill-item">
+      <h3>June 2025</h3>
+      <h2>Building RAG Apps Using MongoDB</h2>
+      <p>MongoDB</p>
+  </div>
+  <div class="skill-item">
+    <h3>June 2025</h3>
+      <h2>MongoDB Schema Design Patterns and Antipatterns Skill Badge</h2>
+      <p>MongoDB</p>
+  </div>
+
+  <div class="skill-item">
+      <h3>October 2022</h3>
+      <h2>TCA-TIBCO Spotfire</h2>
+      <p>Certified Associate</p>
+  </div>
+  <div class="skill-item">
+      <h3>October 2022</h3>
+      <h2>TCP-TIBCO Spotfire</h2>
+      <p>Certified Professional</p>
+  </div>
+    <div class="skill-item">
+        <h3>October 2022</h3>
+        <h2>TCD-TIBCO Spotfire</h2>
+        <p>Certified Developer</p>
+    </div>
+
+    <div class="skill-item">
+        <h3>January 2022</h3>
+        <h2>Spark and Python for Big Data with PySpark</h2>
+        <p>Udemy</p>
+    </div>
+    <div class="skill-item">
+        <h3>December 2018</h3>
+        <h2>Python for Data Science and Machine Learning Bootcamp</h2>
+        <p>Udemy</p>
+    </div>
+    <div class="skill-item">
+        <h3>October 2018</h3>
+        <h2>Deep Learning Specialization (5 courses)</h2>
+        <p>deeplearning.ai on Coursera</p>
+    </div>
+    <div class="skill-item">
+        <h3>November 2017</h3>
+        <h2>Certified Minitab 18 Trainer</h2>
+        <p>Minitab</p>
+    </div>
+    <div class="skill-item">
+        <h3>August 2015</h3>
+        <h2>Euroschool on Exotic Beam</h2>
+        <p>Dubrovnik, Croatia</p>
+    </div>
+    <div class="skill-item">
+        <h3>May 2015</h3>
+        <h2>INFN School of Statistics</h2>
+        <p>Ischia, Italia</p>
+    </div>
+</div>
+</section>
+
+<section id="hobbies">
+    <h2 class="section-title fade-in">Behind me</h2>
+    <div class="hobbies-grid">
+        <div class="hobby-card fade-in">
+            <span class="hobby-icon">👨‍🎨</span>
+            <h3>Digital Painting</h3>
+            <p>Since I was a child, I’ve nurtured a passion for drawing and digital painting; you can find my artwork on Instagram at @blacknote86.</p>
+            <a href="https://www.instagram.com/black_note_86/" class="card-button" target="_blank" style="display: block; width: fit-content; margin: 0 auto;">Discover it</a>
+        </div>
+        <div class="hobby-card fade-in">
+            <span class="hobby-icon">🤡</span>
+            <h3>Clown Doctor</h3>
+            <p>As a clown doctor, I bring smiles and lightness to those who need it most, combining humor and empathy in every visit.</p>
+            <a href="https://www.risvegliaticlown.it" class="card-button" target="_blank" style="display: block; width: fit-content; margin: 0 auto;">Discover it</a>
+        </div>
+        <div class="hobby-card fade-in">
+            <span class="hobby-icon">○●</span>
+            <h3>GO 碁</h3>
+            <p>I love the game of Go for its deep strategy and endless possibilities. It challenges my mind and inspires me to think creatively and strategically.</p>
+            <a href="https://online-go.com" class="card-button" target="_blank" style="display: block; width: fit-content; margin: 0 auto;">Discover it</a>
+        </div>
+        <div class="hobby-card fade-in">
+            <span class="hobby-icon">♟️</span>
+            <h3>Chess</h3>
+            <p>Chess is a passion that sharpens my logic and patience. Each game is a mental workout that helps me improve and think ahead.</p>
+            <a href="https://www.chess.com/member/jtitor" class="card-button" target="_blank" style="display: block; width: fit-content; margin: 0 auto;">Discover it</a>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <h2 class="section-title fade-in">Contact me</h2>
+    <div class="contact-content">
+        <form class="contact-form fade-in">
+            <input type="text" placeholder="Your name" required>
+            <input type="email" placeholder="Your mail" required>
+            <input type="text" placeholder="Subject" required>
+            <textarea rows="5" placeholder="Your message" required></textarea>
+            <button type="submit" class="cta-button">Send Message</button>
+        </form>
+        <div class="contact-info fade-in">
+            <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div>
+                    <h3>Email</h3>
+                    <p>giovanni.bocchi AT gmail.com</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">💼</div>
+                <div>
+                    <h3>LinkedIn</h3>
+                    <p>linkedin.com/in/giovannibocchi</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">🐙</div>
+                <div>
+                    <h3>GitHub</h3>
+                    <p>github.com/giova86</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div>
+                    <h3>Position</h3>
+                    <p>Milano, Italia</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 Giovanni Bocchi, PhD Portfolio. Progettato con passione per i dati.</p>
+</footer>
+
+<script>
+// Animated background particles
+function createParticles() {
+    const bgAnimation = document.getElementById('bgAnimation');
+    const particleCount = 50;
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        bgAnimation.appendChild(particle);
+    }
+}
+
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// Intersection Observer for fade-in animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+// Observe all fade-in elements
+document.querySelectorAll('.fade-in').forEach(el => {
+    observer.observe(el);
+});
+
+// Form submission handler
+document.querySelector('.contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Get form data
+    const formData = new FormData(this);
+    const name = this.querySelector('input[type="text"]').value;
+    // Simple validation
+    if (name.trim() === '') {
+        alert('Per favore, compila tutti i campi obbligatori.');
+        return;
+    }
+    // Simulate form submission
+    const submitButton = this.querySelector('button');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'Invio in corso...';
+    submitButton.disabled = true;
+    setTimeout(() => {
+        alert('Messaggio inviato con successo! Ti risponderò presto.');
+        this.reset();
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+    }, 1500);
+});
+
+// Parallax effect for hero section
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const hero = document.querySelector('.hero');
+    const rate = scrolled * -0.5;
+    if (hero) {
+        hero.style.transform = `translateY(${rate}px)`;
+    }
+});
+
+// Dynamic typing effect for hero title (non usato attualmente, ma presente nel codice originale)
+function typeWriter(element, text, speed = 100) {
+    let i = 0;
+    element.innerHTML = '';
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
+
+// Initialize animations and effects
+document.addEventListener('DOMContentLoaded', function() {
+    createParticles();
+    // Add subtle hover effects to project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            // Questo gestisce l'effetto hover principale già nel CSS
+        });
+        card.addEventListener('mouseleave', function() {
+            // Questo gestisce l'effetto hover principale già nel CSS
+        });
+    });
+    // Add hover effect to skill items
+    document.querySelectorAll('.skill-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.background = 'rgba(0, 210, 255, 0.1)';
+        });
+        item.addEventListener('mouseleave', function() {
+            this.style.background = 'var(--card-bg)';
+        });
+    });
+});
+
+// Add scroll-triggered animations for better performance
+let ticking = false;
+function updateScrollAnimations() {
+    const scrollTop = window.pageYOffset;
+    // Update parallax elements (rimosso l'effetto parallax dalle card progetto per coerenza con l'hover)
+    ticking = false;
+}
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        requestAnimationFrame(updateScrollAnimations);
+        ticking = true;
+    }
+});
+</script>
+</body>
+</html>
