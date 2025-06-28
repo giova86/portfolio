@@ -73,7 +73,7 @@ nav.scrolled {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 0 2rem;
 }
@@ -129,8 +129,8 @@ nav.scrolled {
     justify-content: center;
 }
 .hero-photo {
-    width: 200px; /* Adjust size as needed */
-    height: 200px; /* Adjust size as needed */
+    width: 250px; /* Adjust size as needed */
+    height: 250px; /* Adjust size as needed */
     border-radius: 50%; /* Makes the image circular */
     object-fit: cover; /* Ensures the image covers the area without distortion */
     margin-bottom: 2rem; /* Space between photo and title */
@@ -608,6 +608,10 @@ footer {
 
 /* Responsive timeline */
 @media (max-width: 768px) {
+    nav {
+      display:none;
+    }
+
     .timeline::after {
         left: 31px;
     }
@@ -659,7 +663,7 @@ footer {
 <div class="bg-animation" id="bgAnimation"></div>
 <nav id="navbar">
     <div class="nav-container">
-        <div class="logo">Giovanni Bocchi</div>
+        <!-- <div class="logo">Giovanni Bocchi</div> -->
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About me</a></li>
