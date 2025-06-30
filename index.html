@@ -1333,28 +1333,28 @@ document.querySelectorAll('.fade-in').forEach(el => {
 });
 
 // Form submission handler
-document.querySelector('.contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    // Get form data
-    const formData = new FormData(this);
-    const name = this.querySelector('input[type="text"]').value;
-    // Simple validation
-    if (name.trim() === '') {
-        alert('Per favore, compila tutti i campi obbligatori.');
-        return;
-    }
-    // Simulate form submission
-    const submitButton = this.querySelector('button');
-    const originalText = submitButton.textContent;
-    submitButton.textContent = 'Invio in corso...';
-    submitButton.disabled = true;
-    setTimeout(() => {
-        alert('Messaggio inviato con successo! Ti risponderò presto.');
-        this.reset();
-        submitButton.textContent = originalText;
-        submitButton.disabled = false;
-    }, 1500);
-});
+// document.querySelector('.contact-form').addEventListener('submit', function(e) {
+//     e.preventDefault();
+//     // Get form data
+//     const formData = new FormData(this);
+//     const name = this.querySelector('input[type="text"]').value;
+//     // Simple validation
+//     if (name.trim() === '') {
+//         alert('Per favore, compila tutti i campi obbligatori.');
+//         return;
+//     }
+//     // Simulate form submission
+//     const submitButton = this.querySelector('button');
+//     const originalText = submitButton.textContent;
+//     submitButton.textContent = 'Invio in corso...';
+//     submitButton.disabled = true;
+//     setTimeout(() => {
+//         alert('Messaggio inviato con successo! Ti risponderò presto.');
+//         this.reset();
+//         submitButton.textContent = originalText;
+//         submitButton.disabled = false;
+//     }, 1500);
+// });
 
 // Parallax effect for hero section
 window.addEventListener('scroll', () => {
