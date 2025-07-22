@@ -618,19 +618,21 @@ footer {
       display:none;
     }
 
+    /* Remove timeline line and circles for mobile */
     .timeline::after {
-        left: 31px;
-    }
-    .timeline-item {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 25px;
+        display: none;
     }
     .timeline-item::after {
-        left: 21px;
+        display: none;
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding: 0 15px; /* Adjusted padding, removing space for line/circles */
+        margin-bottom: 2rem; /* Added space between timeline items */
     }
     .timeline-right {
-        left: 0%;
+        left: 0%; /* Ensure all items are left-aligned on mobile */
     }
     .hobbies-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -638,6 +640,25 @@ footer {
     .hero-photo { /* Adjust photo size for smaller screens */
         width: 150px;
         height: 150px;
+    }
+
+    /* Further refinements for mobile timeline content */
+    .timeline-content {
+        padding: 1.5rem; /* Slightly reduced padding for smaller screens */
+        text-align: left; /* Ensure text aligns left within the card */
+    }
+    .timeline-content h3 {
+        font-size: 1.2rem; /* Slightly smaller title font for mobile */
+    }
+    .timeline-content .institution {
+        font-size: 1rem; /* Adjust institution font size */
+    }
+    .timeline-content .date {
+        font-size: 0.85rem; /* Adjust date font size */
+    }
+    .timeline-content .description,
+    .timeline-content .highlights li {
+        font-size: 0.95rem; /* Adjust general text size */
     }
 }
 @media (max-width: 768px) {
@@ -669,7 +690,6 @@ footer {
 <div class="bg-animation" id="bgAnimation"></div>
 <nav id="navbar">
     <div class="nav-container">
-        <!-- <div class="logo">Giovanni Bocchi</div> -->
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About me</a></li>
@@ -754,7 +774,7 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
         </div>
         <div class="timeline-item timeline-right fade-in">
             <div class="timeline-content">
-                <h3>Mastger Degree</h3>
+                <h3>Master Degree</h3>
                 <div class="institution">Università degli Studi di Milano</div>
                 <div class="date">April 2013</div>
                 <ul class="highlights">
@@ -776,7 +796,7 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
 </section>
 
 <section id="experience">
-    <h2 class="section-title fade-in">Work Experience</h2>
+    <h2 class="section-title fade-in">Work Experiences</h2>
     <div class="timeline" id="work-experience-timeline">
         <div class="timeline-item timeline-left fade-in">
             <div class="timeline-content">
@@ -1053,7 +1073,7 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
 
         <div class="project-card fade-in">
             <div class="project-image-container">
-                <img src="static/magiccalculator.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
+                <img src="static/magic_calculator.png" alt="Immagine Wanted OP - Mobile Application" class="project-image">
             </div>
             <div class="project-content">
                 <h3>Pi Book  - Mobile Application</h3>
@@ -1139,7 +1159,7 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
       <div class="institution">Certified Associate</div>
   </div>
   <div class="skill-item">
-      <h3>October 2022</h3>
+    <h3>October 2022</h3>
       <h2>TCP-TIBCO Spotfire</h2>
       <div class="institution">Certified Professional</div>
   </div>
@@ -1215,13 +1235,6 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
 <section id="contact">
     <h2 class="section-title fade-in">Contacts</h2>
     <div class="contact-content">
-        <!-- <form class="contact-form fade-in">
-            <input type="text" placeholder="Your name" required>
-            <input type="email" placeholder="Your mail" required>
-            <input type="text" placeholder="Subject" required>
-            <textarea rows="5" placeholder="Your message" required></textarea>
-            <button type="submit" class="cta-button">Send Message</button>
-        </form> -->
         <div class="contact-info fade-in">
             <div class="contact-item">
                 <div class="contact-icon">📧</div>
