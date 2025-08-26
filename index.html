@@ -1,4 +1,4 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -21,6 +21,7 @@
     --text-gray: #b0b0b0;
     --card-bg: rgba(255, 255, 255, 0.05);
     --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    --gradient2: linear-gradient(135deg, #74d4e8, #3ac3d5);
 }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -122,21 +123,21 @@ nav.scrolled {
     text-align: center;
     position: relative;
 }
-.hero-content { /* Added display flex and align-items to center content vertically */
+.hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 .hero-photo {
-    width: 250px; /* Adjust size as needed */
-    height: 250px; /* Adjust size as needed */
-    border-radius: 50%; /* Makes the image circular */
-    object-fit: cover; /* Ensures the image covers the area without distortion */
-    margin-bottom: 2rem; /* Space between photo and title */
-    border: 5px solid var(--primary-color); /* Optional: add a border */
-    box-shadow: 0 0 20px rgba(0, 210, 255, 0.5); /* Optional: add a subtle shadow */
-    animation: fadeInUp 1s ease-out; /* Apply existing animation */
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 2rem;
+    border: 5px solid var(--primary-color);
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+    animation: fadeInUp 1s ease-out;
 }
 .hero-content h1 {
     font-size: 4rem;
@@ -160,29 +161,48 @@ nav.scrolled {
     animation: fadeInUp 1s ease-out 0.6s both;
     font-style: oblique;
 }
-.cta-button {
+.cta-buttons-container {
+    display: flex;
+    gap: 1rem; /* Adjust space between buttons */
+    align-items: center;
+    animation: fadeInUp 1s ease-out 0.9s both;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center buttons on wrap */
+}
+.cta-button, .cta-button-red {
     display: inline-block;
     padding: 1rem 2rem;
-    background: var(--gradient);
     border: none;
     border-radius: 50px;
     color: white;
     text-decoration: none;
     font-weight: bold;
     transition: all 0.3s ease;
-    animation: fadeInUp 1s ease-out 0.9s both;
     box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+    min-width: 250px; /* Ensure equal width for both buttons */
+    text-align: center;
+}
+.cta-button {
+    background: var(--gradient);
 }
 .cta-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 15px 40px rgba(0, 210, 255, 0.4);
+}
+.cta-button-red {
+    background: var(--accent-color);
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+}
+.cta-button-red:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4);
 }
 
 /* New button style for projects/hobbies */
 .card-button {
     display: inline-block;
     padding: 0.7rem 1.5rem;
-    background: var(--secondary-color); /* A different color for distinction */
+    background: var(--secondary-color);
     border: none;
     border-radius: 25px;
     color: white;
@@ -190,8 +210,8 @@ nav.scrolled {
     font-weight: bold;
     font-size: 0.9rem;
     transition: all 0.3s ease;
-    margin-top: 1rem; /* Space from content above */
-    align-self: flex-start; /* Aligns button to the left in flex column */
+    margin-top: 1rem;
+    align-self: flex-start;
 }
 .card-button:hover {
     background: var(--primary-color);
@@ -211,7 +231,7 @@ section {
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 3rem;
-    background: var(--gradient);
+    background: var(--gradient2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -279,11 +299,11 @@ section {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    position: relative; /* Aggiungi questa proprietà */
+    position: relative;
     display: flex;
     flex-direction: column;
 }
-.project-card::before { /* Aggiungi questo blocco */
+.project-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -293,12 +313,12 @@ section {
     background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.1), transparent);
     transition: left 0.5s ease;
 }
-.project-card:hover::before { /* Aggiungi questo blocco */
+.project-card:hover::before {
     left: 100%;
 }
-.project-card:hover { /* Modifica questo blocco */
-    transform: translateY(-10px) scale(1.02); /* Modificato */
-    box-shadow: 0 20px 40px rgba(0, 210, 255, 0.2); /* Modificato */
+.project-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 210, 255, 0.2);
     border-color: var(--primary-color);
 }
 .project-image-container {
@@ -335,7 +355,7 @@ section {
     gap: 0.5rem;
     margin-top: auto;
     align-items: flex-end;
-    margin-bottom: 1rem; /* Space between tags and button */
+    margin-bottom: 1rem;
 }
 .tech-tag {
     background: rgba(0, 210, 255, 0.2);
@@ -344,6 +364,35 @@ section {
     border-radius: 15px;
     font-size: 0.8rem;
     border: 1px solid var(--primary-color);
+}
+
+/* Project Filter Buttons */
+.filters-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2.5rem;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2);
 }
 
 /* Contact Section */
@@ -378,6 +427,10 @@ section {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+.contact-info a {
+    text-decoration: none;
+    color: inherit;
 }
 .contact-item {
     display: flex;
@@ -442,7 +495,7 @@ footer {
 }
 
 #work-experience-timeline {
-    max-width: 1400px; /* Imposta a 1000px solo per questa timeline */
+    max-width: 1400px;
 }
 
 .timeline {
@@ -575,10 +628,10 @@ footer {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    display: flex; /* Make it a flex container */
-    flex-direction: column; /* Stack children vertically */
-    justify-content: space-between; /* Distribute space */
-    align-items: center; /* Center horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 .hobby-card::before {
     content: '';
@@ -616,8 +669,8 @@ footer {
 .hobby-card p {
     color: var(--text-gray);
     line-height: 1.6;
-    flex-grow: 1; /* Allow paragraph to take available space */
-    margin-bottom: 1rem; /* Space before button */
+    flex-grow: 1;
+    margin-bottom: 1rem;
 }
 
 /* Responsive timeline */
@@ -636,37 +689,37 @@ footer {
 
     .timeline-item {
         width: 100%;
-        padding: 0 15px; /* Adjusted padding, removing space for line/circles */
-        margin-bottom: 2rem; /* Added space between timeline items */
+        padding: 0 15px;
+        margin-bottom: 2rem;
     }
     .timeline-right {
-        left: 0%; /* Ensure all items are left-aligned on mobile */
+        left: 0%;
     }
     .hobbies-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
-    .hero-photo { /* Adjust photo size for smaller screens */
+    .hero-photo {
         width: 150px;
         height: 150px;
     }
 
     /* Further refinements for mobile timeline content */
     .timeline-content {
-        padding: 1.5rem; /* Slightly reduced padding for smaller screens */
-        text-align: left; /* Ensure text aligns left within the card */
+        padding: 1.5rem;
+        text-align: left;
     }
     .timeline-content h3 {
-        font-size: 1.2rem; /* Slightly smaller title font for mobile */
+        font-size: 1.2rem;
     }
     .timeline-content .institution {
-        font-size: 1rem; /* Adjust institution font size */
+        font-size: 1rem;
     }
     .timeline-content .date {
-        font-size: 0.85rem; /* Adjust date font size */
+        font-size: 0.85rem;
     }
     .timeline-content .description,
     .timeline-content .highlights li {
-        font-size: 0.95rem; /* Adjust general text size */
+        font-size: 0.95rem;
     }
 }
 @media (max-width: 768px) {
@@ -716,7 +769,10 @@ footer {
         <h1>Giovanni Bocchi, Ph.D. </h1>
         <p class="subtitle">Data Scientist</p>
         <p class="tagline">Some people can read War and Peace and come away thinking it's a simple adventure story. Others can read the ingredients on a chewing gum wrapper and unlock the secrets of the universe.</p>
-        <a href="#projects" class="cta-button">Explore my projects</a>
+        <div class="cta-buttons-container">
+            <a href="#projects" class="cta-button">Explore my projects</a>
+            <a href="static/CV_Giovanni_Bocchi_EN.pdf" target="_blank" class="cta-button-red" download="CV_Giovanni_Bocchi_EN.pdf">Download CV</a>
+        </div>
     </div>
 </section>
 
@@ -871,7 +927,6 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
 
 <section id="skills">
     <h2 class="section-title fade-in">Statistical & Data Science Methods</h2>
-    <!-- <div class="about-content"> -->
         <div class="methods-grid fade-in">
             <div class="skill-item">
                 <h3>🤖 Industrial Statistics</h3>
@@ -892,19 +947,20 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
             <div class="skill-item">
                 <h3>🗣️ LLM</h3>
                 <p>RAG, Agents, Tools</p>
-            </div>        <!-- </div> -->
+            </div>
             <div class="skill-item">
                 <h3>🗣️ Management</h3>
                 <p>AGILE, Scrum, Kanban, Waterfall</p>
             </div>
-      <!-- </div> -->
-    </div>
+        </div>
 </section>
 
 
 
 <section id="projects">
     <h2 class="section-title fade-in">Personal Projects</h2>
+    <div id="project-filters" class="filters-container fade-in">
+        </div>
     <div class="projects-grid">
         <div class="project-card fade-in">
             <div class="project-image-container">
@@ -1369,70 +1425,86 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
     <h2 class="section-title fade-in">Contacts</h2>
     <div class="contact-content">
         <div class="contact-info fade-in">
-            <div class="contact-item">
-                <div class="contact-icon">📧</div>
-                <div>
-                    <h3>Email</h3>
-                    <p>giovanni.bocchi AT gmail.com</p>
+            <a href="mailto:giovanni.bocchi@gmail.com" target="_blank">
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <h3>Email</h3>
+                        <p>giovanni.bocchi@gmail.com</p>
+                    </div>
                 </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-icon">💼</div>
-                <div>
-                    <h3>LinkedIn</h3>
-                    <p>linkedin.com/in/giovannibocchi</p>
+            </a>
+            <a href="https://www.linkedin.com/in/giovannibocchi" target="_blank">
+                <div class="contact-item">
+                    <div class="contact-icon">💼</div>
+                    <div>
+                        <h3>LinkedIn</h3>
+                        <p>linkedin.com/in/giovannibocchi</p>
+                    </div>
                 </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-icon">🐙</div>
-                <div>
-                    <h3>GitHub</h3>
-                    <p>github.com/giova86</p>
+            </a>
+            <a href="https://github.com/giova86" target="_blank">
+                <div class="contact-item">
+                    <div class="contact-icon">🐙</div>
+                    <div>
+                        <h3>GitHub</h3>
+                        <p>github.com/giova86</p>
+                    </div>
                 </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-icon">📍</div>
-                <div>
-                    <h3>Position</h3>
-                    <p>Milano, Italia</p>
+            </a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Milano,Italia" target="_blank">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <h3>Position</h3>
+                        <p>Milano, Italia</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="contact-info fade-in">
-            <div class="contact-item">
-                <div class="contact-icon">📷</div>
-                <div>
-                    <h3>Instagram</h3>
-                    <p>@ilgiova86</p>
+            <a href="https://www.instagram.com/ilgiova86" target="_blank">
+                <div class="contact-item">
+                    <div class="contact-icon">📷</div>
+                    <div>
+                        <h3>Instagram</h3>
+                        <p>@ilgiova86</p>
+                    </div>
                 </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-icon">f</div>
-                <div>
-                    <h3>Facebook</h3>
-                    <p>facebook.com/gbocchi1/</p>
+            </a>
+            <a href="https://www.facebook.com/gbocchi1/" target="_blank">
+                <div class="contact-item">
+                    <div class="contact-icon">f</div>
+                    <div>
+                        <h3>Facebook</h3>
+                        <p>facebook.com/gbocchi1/</p>
+                    </div>
                 </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-icon">𝕏</div>
-                <div>
-                    <h3>X</h3>
-                    <p>@gbocchi86</p>
+            </a>
+            <a href="https://x.com/gbocchi86" target="_blank">
+                <div class="contact-item">
+                    <div class="contact-icon">𝕏</div>
+                    <div>
+                        <h3>X</h3>
+                        <p>@gbocchi86</p>
+                    </div>
                 </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-icon">📍</div>
-                <div>
-                    <h3>Position</h3>
-                    <p>Brescia, Italia</p>
+            </a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Brescia,Italia" target="_blank">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <h3>Position</h3>
+                        <p>Brescia, Italia</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </section>
 
 <footer>
-    <p>&copy; 2025 Giovanni Bocchi, PhD Portfolio. Progettato con passione per i dati.</p>
+    <p>© 2025 Giovanni Bocchi, PhD Portfolio. Progettato con passione per i dati.</p>
 </footer>
 
 <script>
@@ -1493,29 +1565,6 @@ document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
 });
 
-// Form submission handler
-// document.querySelector('.contact-form').addEventListener('submit', function(e) {
-//     e.preventDefault();
-//     // Get form data
-//     const formData = new FormData(this);
-//     const name = this.querySelector('input[type="text"]').value;
-//     // Simple validation
-//     if (name.trim() === '') {
-//         alert('Per favore, compila tutti i campi obbligatori.');
-//         return;
-//     }
-//     // Simulate form submission
-//     const submitButton = this.querySelector('button');
-//     const originalText = submitButton.textContent;
-//     submitButton.textContent = 'Invio in corso...';
-//     submitButton.disabled = true;
-//     setTimeout(() => {
-//         alert('Messaggio inviato con successo! Ti risponderò presto.');
-//         this.reset();
-//         submitButton.textContent = originalText;
-//         submitButton.disabled = false;
-//     }, 1500);
-// });
 
 // Parallax effect for hero section
 window.addEventListener('scroll', () => {
@@ -1562,6 +1611,62 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.background = 'var(--card-bg)';
         });
     });
+
+    // --- Project Filtering Logic ---
+    const filtersContainer = document.getElementById('project-filters');
+    const projectCards = document.querySelectorAll('.projects-grid .project-card');
+    const tags = new Set();
+
+    if (filtersContainer) {
+        // 1. Collect all unique tags
+        projectCards.forEach(card => {
+            card.querySelectorAll('.tech-tag').forEach(tag => {
+                tags.add(tag.textContent.trim());
+            });
+        });
+
+        // 2. Create and add filter buttons to the DOM
+        // 'All' button first
+        const allButton = document.createElement('button');
+        allButton.classList.add('filter-btn', 'active');
+        allButton.textContent = 'All';
+        filtersContainer.appendChild(allButton);
+
+        // Buttons for each unique tag, sorted alphabetically
+        const sortedTags = Array.from(tags).sort();
+        sortedTags.forEach(tag => {
+            const button = document.createElement('button');
+            button.classList.add('filter-btn');
+            button.textContent = tag;
+            filtersContainer.appendChild(button);
+        });
+
+        // 3. Add event listener for filtering
+        filtersContainer.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON') return;
+
+            // Update active button state
+            filtersContainer.querySelector('.active').classList.remove('active');
+            e.target.classList.add('active');
+
+            const selectedTag = e.target.textContent;
+
+            // Filter logic
+            projectCards.forEach(card => {
+                // The card's display style is 'flex' by default in CSS
+                if (selectedTag === 'All') {
+                    card.style.display = 'flex';
+                } else {
+                    const cardTags = Array.from(card.querySelectorAll('.tech-tag')).map(t => t.textContent.trim());
+                    if (cardTags.includes(selectedTag)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        });
+    }
 });
 
 // Add scroll-triggered animations for better performance
