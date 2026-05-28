@@ -396,6 +396,27 @@ section {
     box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2);
 }
 
+/* Load More Button */
+#load-more-btn {
+    display: block;
+    margin: 2.5rem auto 0;
+    padding: 0.8rem 2.5rem;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+#load-more-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
+}
+
 /* Contact Section */
 .contact-content {
     display: grid;
@@ -1475,6 +1496,7 @@ Whether improving operational efficiency, reducing unplanned downtime, or enabli
         </div>
 
     </div>
+    <button id="load-more-btn">Load more projects</button>
 </section>
 
 <section id="certifications">
@@ -1762,61 +1784,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // --- Project Filtering Logic ---
+    // --- Project Filtering & Pagination Logic ---
     const filtersContainer = document.getElementById('project-filters');
     const projectCards = document.querySelectorAll('.projects-grid .project-card');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const CARDS_PER_PAGE = 9;
     const tags = new Set();
+    let currentTag = 'All';
+    let visibleCount = CARDS_PER_PAGE;
+
+    function renderProjects() {
+        const filtered = Array.from(projectCards).filter(card => {
+            if (currentTag === 'All') return true;
+            const cardTags = Array.from(card.querySelectorAll('.tech-tag')).map(t => t.textContent.trim());
+            return cardTags.includes(currentTag);
+        });
+        Array.from(projectCards).forEach(card => {
+            const idx = filtered.indexOf(card);
+            card.style.display = (idx !== -1 && idx < visibleCount) ? 'flex' : 'none';
+        });
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = visibleCount >= filtered.length ? 'none' : 'block';
+        }
+    }
 
     if (filtersContainer) {
-        // 1. Collect all unique tags
         projectCards.forEach(card => {
             card.querySelectorAll('.tech-tag').forEach(tag => {
                 tags.add(tag.textContent.trim());
             });
         });
 
-        // 2. Create and add filter buttons to the DOM
-        // 'All' button first
         const allButton = document.createElement('button');
         allButton.classList.add('filter-btn', 'active');
         allButton.textContent = 'All';
         filtersContainer.appendChild(allButton);
 
-        // Buttons for each unique tag, sorted alphabetically
-        const sortedTags = Array.from(tags).sort();
-        sortedTags.forEach(tag => {
+        Array.from(tags).sort().forEach(tag => {
             const button = document.createElement('button');
             button.classList.add('filter-btn');
             button.textContent = tag;
             filtersContainer.appendChild(button);
         });
 
-        // 3. Add event listener for filtering
         filtersContainer.addEventListener('click', (e) => {
             if (e.target.tagName !== 'BUTTON') return;
-
-            // Update active button state
             filtersContainer.querySelector('.active').classList.remove('active');
             e.target.classList.add('active');
-
-            const selectedTag = e.target.textContent;
-
-            // Filter logic
-            projectCards.forEach(card => {
-                // The card's display style is 'flex' by default in CSS
-                if (selectedTag === 'All') {
-                    card.style.display = 'flex';
-                } else {
-                    const cardTags = Array.from(card.querySelectorAll('.tech-tag')).map(t => t.textContent.trim());
-                    if (cardTags.includes(selectedTag)) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                }
-            });
+            currentTag = e.target.textContent;
+            visibleCount = CARDS_PER_PAGE;
+            renderProjects();
         });
     }
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+            visibleCount += CARDS_PER_PAGE;
+            renderProjects();
+        });
+    }
+
+    renderProjects();
 });
 
 // Add scroll-triggered animations for better performance
