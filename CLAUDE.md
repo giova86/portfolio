@@ -20,11 +20,31 @@ Open `http://localhost:8000` in a browser. There is no build step.
 
 ## Architecture
 
-Everything is self-contained in `index.html`:
+`index.html` holds the single-page site. `static/css/`, `static/js/`, and
+`projects/` hold the files shared with (or making up) the project detail
+pages.
 
-- **`<style>` block** — all CSS, using CSS custom properties (`--primary-color`, `--secondary-color`, `--accent-color`, `--card-bg`, `--gradient`, etc.) defined on `:root`. Theme changes go here.
-- **HTML body** — sequential sections: `#home`, `#about`, `#education`, `#experience`, `#skills`, `#projects`, `#certifications`, `#hobbies`, `#contact`, then `<footer>`.
-- **`<script>` block** at the bottom — all vanilla JavaScript with no external dependencies.
+- **`static/css/shared.css`** — CSS shared by every page: `:root` custom
+  properties (`--brand`, `--bg`, `--gradient`, etc.), reset, the animated
+  background, nav, `.card-button`, footer, and `.fade-in` transitions.
+  Site-wide theme changes (colors, fonts) go here.
+- **`static/css/project-detail.css`** — CSS used only by `projects/*.html`:
+  hero banner, overview/features/tech-stack/gallery sections. Not linked
+  from `index.html`.
+- **`index.html` `<style>` block** — CSS specific to the single-page site:
+  hero, timeline, skills, projects grid/filters, contact, etc.
+- **`index.html` body** — sequential sections: `#home`, `#about`,
+  `#education`, `#experience`, `#skills`, `#projects`, `#certifications`,
+  `#hobbies`, `#contact`, then `<footer>`.
+- **`static/js/shared.js`** — mobile nav toggle, in-page smooth scroll,
+  navbar scroll-shrink, and the `.fade-in` `IntersectionObserver`, shared
+  by every page.
+- **`index.html` `<script>` block** at the bottom — page-specific vanilla
+  JS: service worker registration, project search/filter/pagination, and
+  the project-card → detail-page click-through.
+- **`projects/<slug>.html`** — one static detail page per project, linked
+  automatically from its home-page card (see "Adding a project" below).
+  `projects/_template.html` is the starting point for a new one.
 
 ### Key JS behaviors
 
@@ -36,6 +56,13 @@ Everything is self-contained in `index.html`:
 ### Adding a project
 
 Copy an existing `.project-card` div inside `.projects-grid`. The filter button for any new `<span class="tech-tag">` is generated automatically — no JS changes needed.
+
+Clicking a card navigates to `projects/<slug>.html`, where `<slug>` is the
+card's `<h3>` title lowercased, with accents stripped and non-alphanumeric
+runs turned into single hyphens (e.g. "Camera Bricks" → `camera-bricks.html`).
+To give a project a detail page, copy `projects/_template.html` to
+`projects/<slug>.html` (the slug must match) and fill in the `<!-- TODO -->`
+placeholders. Until that file exists, clicking the card 404s.
 
 ### Adding a timeline entry
 
