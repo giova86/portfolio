@@ -48,7 +48,7 @@ pages.
 
 ### Key JS behaviors
 
-- **Particle background**: `createParticles()` generates 50 animated `<div class="particle">` elements into `#bgAnimation` on load.
+- **Animated background**: pure CSS (`.bg-animation` in `static/css/shared.css`) — a gradient + grain overlay, no JS involved.
 - **Scroll animations**: `IntersectionObserver` adds `.visible` to `.fade-in` elements when they enter the viewport; CSS handles the opacity/transform transition.
 - **Timeline**: Education and experience use `.timeline-left` / `.timeline-right` alternating layout with a vertical `::after` line. On mobile (`<768px`) the line and dots are hidden and all items go full-width.
 - **Project filter**: Built dynamically on `DOMContentLoaded` — scans all `.tech-tag` elements in `.projects-grid`, collects unique values, renders `<button class="filter-btn">` into `#project-filters`, then toggles `card.style.display` on click. Adding a project card with new tech tags automatically adds a new filter button.
@@ -71,4 +71,6 @@ Add a `.timeline-item` with alternating `.timeline-left` / `.timeline-right` cla
 ## Assets
 
 - `static/` — PNG screenshots for project cards, profile photo (`gbocchi3.png`), and the CV PDF (`CV_Giovanni_Bocchi_EN.pdf`).
+- `static/css/` — `shared.css` (every page) and `project-detail.css` (`projects/*.html` only).
+- `static/js/` — `shared.js` (every page).
 - Project card images are referenced directly in HTML `src` attributes; keep filenames lowercase with no spaces.
