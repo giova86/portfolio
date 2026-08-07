@@ -709,9 +709,18 @@
         }
 
         /* Load More Button */
-        #load-more-btn {
+        .load-more-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        #load-more-btn,
+        #load-all-btn {
             display: block;
-            margin: 3rem auto 0;
+            margin: 0;
             padding: 0.8rem 2.5rem;
             background: transparent;
             border: 1px solid var(--border-strong);
@@ -723,11 +732,18 @@
             transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
         }
 
-        #load-more-btn:hover {
+        #load-more-btn:hover,
+        #load-all-btn:hover {
             background: var(--gradient);
             color: #06121c;
             border-color: transparent;
             transform: translateY(-2px);
+        }
+
+        #load-all-btn {
+            background: transparent;
+            border-color: var(--border-strong);
+            opacity: 0.85;
         }
 
         /* Contact Section */
@@ -1985,6 +2001,7 @@
                         <span class="tech-tag">React</span>
                         <span class="tech-tag">HTML</span>
                         <span class="tech-tag">Ollama</span>
+                        <span class="tech-tag">LLM</span>
                     </div>
                 </div>
             </div>
@@ -2039,9 +2056,79 @@
                 </div>
             </div>
 
+            <div class="project-card fade-in">
+                <div class="project-image-container">
+                    <img src="static/Cosmos.png" alt="Immagine Cosmos" class="project-image">
+                </div>
+                <div class="project-content">
+                    <h3>Cosmos - Web Application</h3>
+                    <p>Multi AI Agent</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Javascript</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">FastAPI</span>
+                        <span class="tech-tag">Ollama</span>
+                        <span class="tech-tag">LM Studio</span>
+                        <span class="tech-tag">OpenAI</span>
+                        <span class="tech-tag">LLM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image-container">
+                    <img src="static/magic_coin.png" alt="Immagine IGDown" class="project-image">
+                </div>
+                <div class="project-content">
+                    <h3>Magic Coin - Mobile Application</h3>
+                    <p>Create a real coin from the screen.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Dart</span>
+                        <span class="tech-tag">Flutter</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image-container">
+                    <img src="static/choosen.png" alt="Immagine IGDown" class="project-image">
+                </div>
+                <div class="project-content">
+                    <h3>Choosen - Mobile Application</h3>
+                    <p>Choose a card from the deck and predict it.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Dart</span>
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Ntfy</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image-container">
+                    <img src="static/llm_wiki.png" alt="Immagine LLM Wiki" class="project-image">
+                </div>
+                <div class="project-content">
+                    <h3>LLM Wiki - Web Application</h3>
+                    <p>Second brain based on Karpathy's guidelines</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">LLM</span>
+                        <span class="tech-tag">Ollama</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Javascript</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">FastAPI</span>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
-        <button id="load-more-btn">Load more projects</button>
+        <div class="load-more-container">
+            <button id="load-more-btn">Load more projects</button>
+            <button id="load-all-btn">Load all projects</button>
+        </div>
     </section>
 
     <section id="certifications">
@@ -2304,6 +2391,7 @@
             const filtersContainer = document.getElementById('project-filters');
             const projectCards = document.querySelectorAll('.projects-grid .project-card');
             const loadMoreBtn = document.getElementById('load-more-btn');
+            const loadAllBtn = document.getElementById('load-all-btn');
             const searchInput = document.getElementById('project-search-input');
             const noResults = document.getElementById('no-results');
             const CARDS_PER_PAGE = 9;
@@ -2325,8 +2413,12 @@
                     const idx = filtered.indexOf(card);
                     card.style.display = (idx !== -1 && idx < visibleCount) ? 'flex' : 'none';
                 });
+                const hasMore = visibleCount < filtered.length;
                 if (loadMoreBtn) {
-                    loadMoreBtn.style.display = visibleCount >= filtered.length ? 'none' : 'block';
+                    loadMoreBtn.style.display = hasMore ? 'block' : 'none';
+                }
+                if (loadAllBtn) {
+                    loadAllBtn.style.display = hasMore ? 'block' : 'none';
                 }
                 if (noResults) {
                     noResults.style.display = filtered.length === 0 ? 'block' : 'none';
@@ -2373,6 +2465,13 @@
             if (loadMoreBtn) {
                 loadMoreBtn.addEventListener('click', () => {
                     visibleCount += CARDS_PER_PAGE;
+                    renderProjects();
+                });
+            }
+
+            if (loadAllBtn) {
+                loadAllBtn.addEventListener('click', () => {
+                    visibleCount = projectCards.length;
                     renderProjects();
                 });
             }
