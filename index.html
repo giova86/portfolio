@@ -301,6 +301,7 @@
             display: flex;
             flex-direction: column;
             max-width: 600px;
+            cursor: pointer;
         }
 
         .project-card::before {
@@ -2115,6 +2116,27 @@
                 loadAllBtn.addEventListener('click', () => {
                     visibleCount = projectCards.length;
                     renderProjects();
+                });
+            }
+
+            // --- Card click-through to project detail page ---
+            function slugify(text) {
+                return text
+                    .toLowerCase()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+            }
+
+            const projectsGrid = document.querySelector('.projects-grid');
+            if (projectsGrid) {
+                projectsGrid.addEventListener('click', (e) => {
+                    if (e.target.closest('a.card-button')) return;
+                    const card = e.target.closest('.project-card');
+                    if (!card) return;
+                    const title = card.querySelector('h3')?.textContent.trim();
+                    if (!title) return;
+                    window.location.href = `projects/${slugify(title)}.html`;
                 });
             }
 
