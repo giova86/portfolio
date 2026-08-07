@@ -41,11 +41,15 @@ Out of scope:
   the whole flow (styling, nav, slug matching, gallery layout).
 - `static/css/shared.css` — CSS extracted from `index.html`'s `<style>`
   block: `:root` custom properties, reset/base rules, `#navbar` and
-  `.nav-links`/`.nav-toggle`, `#bgAnimation`/`.particle`, `.card-button`,
-  `footer`, and the `.fade-in`/`.visible` transition rules.
+  `.nav-links`/`.nav-toggle`, `.bg-animation` (+ its `::after` grain overlay
+  and `aurora` keyframes), `.card-button`, `footer`, and the
+  `.fade-in`/`.visible` transition rules.
 - `static/js/shared.js` — JS extracted from `index.html`'s `<script>` block:
-  `createParticles()` and the navbar toggle/scroll-shrink `IntersectionObserver`
-  wiring.
+  the mobile nav toggle, the anchor smooth-scroll handler, the navbar
+  scroll-shrink effect, and the `.fade-in` `IntersectionObserver` wiring.
+  (The animated background is pure CSS — a `.bg-animation` element with a
+  gradient + grain overlay, no JS involved — so nothing to extract there
+  beyond the CSS rule itself, which is part of `shared.css`.)
 
 ### Existing files touched
 
@@ -103,9 +107,10 @@ Top to bottom:
    small inline `<style>` block for the page-specific sections (hero banner,
    overview, features list, tech-stack grid, gallery grid) — same pattern as
    `index.html`, kept inline since these rules are unique to detail pages.
-2. `#bgAnimation` div (particle background, populated by shared.js) and the
-   same `<nav id="navbar">` as `index.html`, with the logo and all anchor
-   links pointing to `../index.html#...` instead of `#...`.
+2. `.bg-animation` div (animated background, pure CSS via `shared.css`, no
+   JS involved) and the same `<nav id="navbar">` as `index.html`, with the
+   logo and all anchor links pointing to `../index.html#...` instead of
+   `#...`.
 3. `← Back to projects` link to `../index.html#projects`, right under the nav.
 4. Hero section: cover image, `<h1>` title, one-line tagline, `.project-tech`
    tag row (reusing the existing tag styling), and one or more
@@ -119,7 +124,7 @@ Top to bottom:
    in `<a target="_blank">` pointing at the full-size image.
 9. Same `<footer>` markup as `index.html`.
 10. `<script src="../static/js/shared.js"></script>` at the end for the
-    particle background and nav behavior.
+    nav toggle/scroll behavior and the fade-in observer.
 
 Every placeholder block is marked with an HTML comment (e.g.
 `<!-- TODO: project title -->`) so it's obvious what to replace when
@@ -144,10 +149,10 @@ produces, which is how we verify the click-through wiring end to end.
 
 - Serve the site locally, click the Camera Bricks card from the home page,
   confirm it navigates to `projects/camera-bricks.html` and the page renders
-  with working nav, particle background, back link, and gallery placeholders.
+  with working nav, animated background, back link, and gallery placeholders.
 - Click a card for a project that has no detail page yet, confirm it 404s
   (expected, not a regression) — sanity check that other cards remain
   functional (external `card-button` links still work, filters/search/load
   more are unaffected).
 - Confirm `index.html` still renders identically after the CSS/JS extraction
-  (visual diff of nav, particles, buttons, footer).
+  (visual diff of nav, animated background, buttons, footer).
