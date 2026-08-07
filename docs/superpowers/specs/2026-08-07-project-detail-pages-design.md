@@ -50,6 +50,13 @@ Out of scope:
   (The animated background is pure CSS — a `.bg-animation` element with a
   gradient + grain overlay, no JS involved — so nothing to extract there
   beyond the CSS rule itself, which is part of `shared.css`.)
+- `static/css/project-detail.css` — CSS for the sections that only exist on
+  project detail pages: the back-to-projects link, hero banner, overview/
+  features/tech-stack/gallery sections. Linked only by `projects/*.html`
+  (not by `index.html`, which has no use for these selectors). Kept as its
+  own file, separate from `shared.css`, so every future `projects/<slug>.html`
+  reuses it instead of duplicating ~250 lines of CSS inline — the same
+  duplication concern that motivated `shared.css` in the first place.
 
 ### Existing files touched
 
@@ -102,11 +109,11 @@ If `projects/<slug>.html` does not exist yet for a given card, the click
 
 Top to bottom:
 
-1. `<head>`: placeholder `<title>` and meta description, links to
-   `static/css/shared.css` (relative path `../static/css/shared.css`) plus a
-   small inline `<style>` block for the page-specific sections (hero banner,
-   overview, features list, tech-stack grid, gallery grid) — same pattern as
-   `index.html`, kept inline since these rules are unique to detail pages.
+1. `<head>`: placeholder `<title>` and meta description, links to both
+   `static/css/shared.css` and `static/css/project-detail.css` (relative
+   paths `../static/css/shared.css` / `../static/css/project-detail.css`) —
+   no inline `<style>` block, since every rule the page needs lives in one
+   of the two shared stylesheets.
 2. `.bg-animation` div (animated background, pure CSS via `shared.css`, no
    JS involved) and the same `<nav id="navbar">` as `index.html`, with the
    logo and all anchor links pointing to `../index.html#...` instead of
