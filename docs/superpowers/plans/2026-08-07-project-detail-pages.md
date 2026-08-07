@@ -4,7 +4,7 @@
 
 **Goal:** Give each project a dedicated, linkable detail page reachable by clicking its card on the home page, plus a reusable blank template for authoring new ones.
 
-**Architecture:** Extract the CSS/JS that both `index.html` and the new pages need (variables, nav, animated background, `.card-button`, footer, fade-in) into `static/css/shared.css` / `static/js/shared.js`. Add a delegated click handler on `.projects-grid` that computes a slug from each card's title and navigates to `projects/<slug>.html`. Ship `projects/_template.html` (blank) and `projects/camera-bricks.html` (filled worked example) as static HTML files with no build step, matching the rest of the site.
+**Architecture:** Extract the CSS/JS that both `index.html` and the new pages need (variables, nav, animated background, `.card-button`, footer, fade-in) into `static/css/shared.css` / `static/js/shared.js`. Put the CSS unique to detail pages (hero, overview, features, tech stack, gallery) in its own `static/css/project-detail.css`, linked only by `projects/*.html`, so no future project page duplicates it. Add a delegated click handler on `.projects-grid` that computes a slug from each card's title and navigates to `projects/<slug>.html`. Ship `projects/_template.html` (blank) and `projects/camera-bricks.html` (filled worked example) as static HTML files with no build step, matching the rest of the site.
 
 **Tech Stack:** Plain HTML/CSS/vanilla JS, no build system, no dependencies. Reference: [docs/superpowers/specs/2026-08-07-project-detail-pages-design.md](../specs/2026-08-07-project-detail-pages-design.md).
 
@@ -1001,23 +1001,212 @@ EOF
 
 ---
 
-### Task 3: Create the blank project template (`projects/_template.html`)
+### Task 3: Create the project-detail stylesheet and the blank template
 
 **Files:**
+- Create: `static/css/project-detail.css`
 - Create: `projects/_template.html`
 
 **Interfaces:**
 - Consumes: `static/css/shared.css` and `static/js/shared.js` (from Tasks 1–2), loaded via `../static/...` relative paths.
-- Produces: the file Task 4 duplicates, and the file a human author duplicates for every future project. Section class names (`.project-hero`, `.project-tagline`, `.project-tech`, `.tech-tag`, `.project-links`, `.project-section`, `.project-features`, `.project-stack-grid`, `.project-stack-item`, `.project-gallery`, `.project-detail-back`) are defined here and must be reused as-is by Task 4.
+- Produces: `static/css/project-detail.css`, defining `.project-detail-back`, `.project-hero`, `.project-hero-image`, `.project-tagline`, `.project-tech`, `.tech-tag`, `.project-links`, `.project-section`, `.project-features`, `.project-stack-grid`, `.project-stack-item`, `.project-gallery` — linked by every `projects/*.html` page (not by `index.html`). Also produces `projects/_template.html`, the file Task 4 duplicates and the file a human author duplicates for every future project.
 
-- [ ] **Step 1: Create the `projects/` directory**
+- [ ] **Step 1: Create the `projects/` and `static/css/` directories**
 
 Run:
 ```bash
 mkdir -p /Users/gbocchi/GitHub/dev_pers/portfolio/projects
+mkdir -p /Users/gbocchi/GitHub/dev_pers/portfolio/static/css
 ```
 
-- [ ] **Step 2: Write `projects/_template.html`**
+- [ ] **Step 2: Write `static/css/project-detail.css`**
+
+Create `static/css/project-detail.css` with this exact content:
+
+```css
+/* Styles for project detail pages (projects/*.html) only — index.html
+   does not link this file. Depends on the variables/reset defined in
+   shared.css, which every projects/*.html page also links. */
+
+.project-detail-back {
+    position: relative;
+    z-index: 1;
+    display: block;
+    max-width: var(--maxw);
+    margin: 6.5rem auto 0;
+    padding: 0 2.5rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.project-detail-back:hover {
+    color: var(--brand);
+}
+
+.project-hero {
+    max-width: var(--maxw);
+    margin: 2rem auto 0;
+    padding: 0 2.5rem 3rem;
+    display: grid;
+    gap: 2rem;
+}
+
+.project-hero-image {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.project-hero h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-section);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.project-tagline {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tech-tag {
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--brand);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.project-section {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 2.5rem 3rem;
+}
+
+.project-section h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.project-section p {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.project-features {
+    list-style: none;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.project-features li {
+    color: var(--text-muted);
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.6;
+}
+
+.project-features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gradient);
+}
+
+.project-stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+}
+
+.project-stack-item {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+}
+
+.project-stack-item h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--brand);
+    margin-bottom: 0.4rem;
+}
+
+.project-stack-item p {
+    font-size: 0.92rem;
+    margin-bottom: 0;
+}
+
+.project-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.project-gallery a {
+    display: block;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.project-gallery img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.project-gallery a:hover img {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .project-hero {
+        padding: 0 1.25rem 2rem;
+    }
+
+    .project-section {
+        padding: 0 1.25rem 2rem;
+    }
+
+    .project-detail-back {
+        padding: 0 1.25rem;
+    }
+}
+```
+
+- [ ] **Step 3: Write `projects/_template.html`**
 
 Create `projects/_template.html` with this exact content:
 
@@ -1064,186 +1253,8 @@ Create `projects/_template.html` with this exact content:
 
     <!-- Shared site styles (variables, nav, buttons, footer, animations) -->
     <link rel="stylesheet" href="../static/css/shared.css">
-    <style>
-        /* Page-specific styles for project detail pages */
-
-        .project-detail-back {
-            position: relative;
-            z-index: 1;
-            display: block;
-            max-width: var(--maxw);
-            margin: 6.5rem auto 0;
-            padding: 0 2.5rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .project-detail-back:hover {
-            color: var(--brand);
-        }
-
-        .project-hero {
-            max-width: var(--maxw);
-            margin: 2rem auto 0;
-            padding: 0 2.5rem 3rem;
-            display: grid;
-            gap: 2rem;
-        }
-
-        .project-hero-image {
-            width: 100%;
-            max-height: 420px;
-            object-fit: cover;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-        }
-
-        .project-hero h1 {
-            font-family: var(--font-display);
-            font-size: var(--fs-section);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-tagline {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tech-tag {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--brand);
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            border: 1px solid rgba(56, 189, 248, 0.25);
-        }
-
-        .project-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .project-section {
-            max-width: var(--maxw);
-            margin: 0 auto;
-            padding: 0 2.5rem 3rem;
-        }
-
-        .project-section h2 {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .project-section p {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        .project-features {
-            list-style: none;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .project-features li {
-            color: var(--text-muted);
-            padding-left: 1.5rem;
-            position: relative;
-            line-height: 1.6;
-        }
-
-        .project-features li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.55rem;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--gradient);
-        }
-
-        .project-stack-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.25rem;
-        }
-
-        .project-stack-item {
-            background: var(--bg-elev);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-        }
-
-        .project-stack-item h3 {
-            font-family: var(--font-display);
-            font-size: 1rem;
-            color: var(--brand);
-            margin-bottom: 0.4rem;
-        }
-
-        .project-stack-item p {
-            font-size: 0.92rem;
-            margin-bottom: 0;
-        }
-
-        .project-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
-        }
-
-        .project-gallery a {
-            display: block;
-            border-radius: var(--radius);
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .project-gallery img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .project-gallery a:hover img {
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 768px) {
-            .project-hero {
-                padding: 0 1.25rem 2rem;
-            }
-
-            .project-section {
-                padding: 0 1.25rem 2rem;
-            }
-
-            .project-detail-back {
-                padding: 0 1.25rem;
-            }
-        }
-    </style>
+    <!-- Styles specific to project detail pages -->
+    <link rel="stylesheet" href="../static/css/project-detail.css">
 </head>
 
 <body>
@@ -1340,14 +1351,20 @@ Create `projects/_template.html` with this exact content:
 </html>
 ```
 
-- [ ] **Step 3: Verify the file is well-formed and paths resolve**
+- [ ] **Step 4: Verify both files**
 
 Run:
 ```bash
 cd /Users/gbocchi/GitHub/dev_pers/portfolio && python3 -c "
+css = open('static/css/project-detail.css', encoding='utf-8').read()
+assert '.project-hero {' in css
+assert '.project-gallery {' in css
+
 content = open('projects/_template.html', encoding='utf-8').read()
 assert content.count('<html') == 1 and content.count('</html>') == 1
+assert content.count('<style>') == 0, 'template should have no inline style block, everything lives in the two linked stylesheets'
 assert '../static/css/shared.css' in content
+assert '../static/css/project-detail.css' in content
 assert '../static/js/shared.js' in content
 assert content.count('id=\"navbar\"') == 1
 print('OK')
@@ -1355,17 +1372,19 @@ print('OK')
 ```
 Expected: `OK`
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
 cd /Users/gbocchi/GitHub/dev_pers/portfolio
-git add projects/_template.html
+git add static/css/project-detail.css projects/_template.html
 git commit -m "$(cat <<'EOF'
-Add blank project detail page template
+Add project-detail stylesheet and blank project template
 
-Starting point to duplicate for each project's detail page:
-hero, overview, features, tech stack, and gallery sections, reusing
-the shared nav/footer/variables from static/css/shared.css.
+static/css/project-detail.css holds the hero/overview/features/
+tech-stack/gallery styling shared by every projects/*.html page, so
+duplicating the template for a new project never means duplicating CSS.
+projects/_template.html is the starting point for a new project's
+detail page.
 EOF
 )"
 ```
@@ -1378,7 +1397,7 @@ EOF
 - Create: `projects/camera-bricks.html`
 
 **Interfaces:**
-- Consumes: `projects/_template.html` (Task 3) as its starting structure; `static/css/shared.css` / `static/js/shared.js` (Tasks 1–2).
+- Consumes: `projects/_template.html` (Task 3) as its starting structure; `static/css/shared.css`, `static/css/project-detail.css`, `static/js/shared.js` (Tasks 1–3).
 - Produces: the page that Task 5's click-through wiring is verified against — the filename must equal `slugify("Camera Bricks")` = `camera-bricks.html`.
 
 - [ ] **Step 1: Write `projects/camera-bricks.html`**
@@ -1431,186 +1450,8 @@ Create `projects/camera-bricks.html` with this exact content (duplicated from `_
 
     <!-- Shared site styles (variables, nav, buttons, footer, animations) -->
     <link rel="stylesheet" href="../static/css/shared.css">
-    <style>
-        /* Page-specific styles for project detail pages */
-
-        .project-detail-back {
-            position: relative;
-            z-index: 1;
-            display: block;
-            max-width: var(--maxw);
-            margin: 6.5rem auto 0;
-            padding: 0 2.5rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .project-detail-back:hover {
-            color: var(--brand);
-        }
-
-        .project-hero {
-            max-width: var(--maxw);
-            margin: 2rem auto 0;
-            padding: 0 2.5rem 3rem;
-            display: grid;
-            gap: 2rem;
-        }
-
-        .project-hero-image {
-            width: 100%;
-            max-height: 420px;
-            object-fit: cover;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-        }
-
-        .project-hero h1 {
-            font-family: var(--font-display);
-            font-size: var(--fs-section);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-tagline {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tech-tag {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--brand);
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            border: 1px solid rgba(56, 189, 248, 0.25);
-        }
-
-        .project-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .project-section {
-            max-width: var(--maxw);
-            margin: 0 auto;
-            padding: 0 2.5rem 3rem;
-        }
-
-        .project-section h2 {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .project-section p {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        .project-features {
-            list-style: none;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .project-features li {
-            color: var(--text-muted);
-            padding-left: 1.5rem;
-            position: relative;
-            line-height: 1.6;
-        }
-
-        .project-features li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.55rem;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--gradient);
-        }
-
-        .project-stack-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.25rem;
-        }
-
-        .project-stack-item {
-            background: var(--bg-elev);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-        }
-
-        .project-stack-item h3 {
-            font-family: var(--font-display);
-            font-size: 1rem;
-            color: var(--brand);
-            margin-bottom: 0.4rem;
-        }
-
-        .project-stack-item p {
-            font-size: 0.92rem;
-            margin-bottom: 0;
-        }
-
-        .project-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
-        }
-
-        .project-gallery a {
-            display: block;
-            border-radius: var(--radius);
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .project-gallery img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .project-gallery a:hover img {
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 768px) {
-            .project-hero {
-                padding: 0 1.25rem 2rem;
-            }
-
-            .project-section {
-                padding: 0 1.25rem 2rem;
-            }
-
-            .project-detail-back {
-                padding: 0 1.25rem;
-            }
-        }
-    </style>
+    <!-- Styles specific to project detail pages -->
+    <link rel="stylesheet" href="../static/css/project-detail.css">
 </head>
 
 <body>
@@ -1725,6 +1566,8 @@ content = open('projects/camera-bricks.html', encoding='utf-8').read()
 assert '<h1>Camera Bricks</h1>' in content
 assert 'camerabricks.streamlit.app' in content
 assert '../static/camera.png' in content
+assert content.count('<style>') == 0, 'no inline style block — both stylesheets are linked'
+assert '../static/css/project-detail.css' in content
 print('OK')
 "
 ```
@@ -1740,7 +1583,7 @@ Add Camera Bricks project detail page as a worked example
 
 Duplicated from _template.html and filled with the real card data
 (title, tagline, tech tags, live demo link, expanded overview).
-Verifies the template renders correctly end to end.
+Verifies the template and project-detail.css render correctly end to end.
 EOF
 )"
 ```
@@ -1903,14 +1746,17 @@ Replace with:
 ```markdown
 ## Architecture
 
-`index.html` holds the single-page site. `static/css/shared.css` and
-`static/js/shared.js` hold CSS/JS shared with the project detail pages
-under `projects/`.
+`index.html` holds the single-page site. `static/css/`, `static/js/`, and
+`projects/` hold the files shared with (or making up) the project detail
+pages.
 
 - **`static/css/shared.css`** — CSS shared by every page: `:root` custom
   properties (`--brand`, `--bg`, `--gradient`, etc.), reset, the animated
   background, nav, `.card-button`, footer, and `.fade-in` transitions.
   Site-wide theme changes (colors, fonts) go here.
+- **`static/css/project-detail.css`** — CSS used only by `projects/*.html`:
+  hero banner, overview/features/tech-stack/gallery sections. Not linked
+  from `index.html`.
 - **`index.html` `<style>` block** — CSS specific to the single-page site:
   hero, timeline, skills, projects grid/filters, contact, etc.
 - **`index.html` body** — sequential sections: `#home`, `#about`,
