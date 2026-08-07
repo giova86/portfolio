@@ -56,16 +56,6 @@
     margin-bottom: 1rem;
 }
 
-.tech-tag {
-    background: rgba(56, 189, 248, 0.1);
-    color: var(--brand);
-    padding: 0.3rem 0.8rem;
-    border-radius: 50px;
-    font-size: 0.78rem;
-    font-weight: 500;
-    border: 1px solid rgba(56, 189, 248, 0.25);
-}
-
 .project-links {
     display: flex;
     flex-wrap: wrap;

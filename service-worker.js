@@ -56,12 +56,22 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   // 1. Page navigations: network-first, fall back to cached shell (offline).
+  // Only the site root / index.html updates the cached shell entry — a
+  // navigation to any other page (a project detail page, or a 404) must
+  // never overwrite it, or an offline visit after browsing projects would
+  // show that other page (or an error page) for every URL on the site.
   if (request.mode === 'navigate') {
+    const shellUrls = [
+      new URL('./', self.registration.scope).href,
+      new URL('./index.html', self.registration.scope).href,
+    ];
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(SHELL_CACHE).then((cache) => cache.put('./index.html', copy));
+          if (response.ok && shellUrls.includes(request.url)) {
+            const copy = response.clone();
+            caches.open(SHELL_CACHE).then((cache) => cache.put('./index.html', copy));
+          }
           return response;
         })
         .catch(() => caches.match('./index.html', { ignoreSearch: true }))
