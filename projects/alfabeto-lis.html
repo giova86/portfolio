@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfabeto LIS — Giovanni Bocchi</title>
+    <meta name="description"
+        content="A machine learning model that detects the right hand and predicts the corresponding Italian Sign Language letter from hand shape.">
+    <meta name="author" content="Giovanni Bocchi">
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Alfabeto LIS — Giovanni Bocchi">
+    <meta property="og:description"
+        content="A machine learning model that detects the right hand and predicts the corresponding Italian Sign Language letter from hand shape.">
+    <meta property="og:image" content="../static/lis.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Alfabeto LIS — Giovanni Bocchi">
+    <meta name="twitter:description"
+        content="A machine learning model that detects the right hand and predicts the corresponding Italian Sign Language letter from hand shape.">
+    <meta name="twitter:image" content="../static/lis.png">
+
+    <!-- Favicon (inline SVG) -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0e16'/><text x='50' y='70' font-size='58' font-family='monospace' font-weight='700' text-anchor='middle' fill='%2338bdf8'>G</text></svg>">
+
+    <!-- PWA -->
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0a0e16">
+    <link rel="apple-touch-icon" href="../static/icons/apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="G. Bocchi">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Shared site styles (variables, nav, buttons, footer, animations) -->
+    <link rel="stylesheet" href="../static/css/shared.css">
+    <!-- Styles specific to project detail pages -->
+    <link rel="stylesheet" href="../static/css/project-detail.css">
+</head>
+
+<body>
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="../index.html#home" class="logo">Giovanni Bocchi</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html#about">About me</a></li>
+                <li><a href="../index.html#education">Education</a></li>
+                <li><a href="../index.html#experience">Experiences</a></li>
+                <li><a href="../index.html#projects">Projects</a></li>
+                <li><a href="../index.html#hobbies">Miscellanea</a></li>
+                <li><a href="../index.html#contact">Contacts</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <a href="../index.html#projects" class="project-detail-back fade-in">← Back to projects</a>
+
+    <section class="project-hero fade-in">
+        <img src="../static/lis.png" alt="Immagine Alfabeto LIS" class="project-hero-image">
+        <div>
+            <h1>Alfabeto LIS</h1>
+            <p class="project-tagline">A machine learning model that detects the right hand, extracts the main
+                features, and predicts the corresponding sign in Italian Sign Language based on hand shape.</p>
+            <div class="project-tech">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Sklearn</span>
+                <span class="tech-tag">OpenCV</span>
+                <span class="tech-tag">Mediapipe</span>
+            </div>
+            <div class="project-links">
+                <a href="https://giova86-streamlit-lis-main-develop-luv386.streamlit.app" class="card-button"
+                    target="_blank">Live Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>Overview</h2>
+        <p>Alfabeto LIS is a machine learning application that recognises letters of the Italian Sign Language (LIS)
+            alphabet from hand shape. It detects the user's right hand through the webcam and classifies the sign
+            being made.</p>
+        <p>The pipeline extracts hand landmarks with Mediapipe, derives the main features from them with OpenCV, and
+            feeds those features into a Sklearn model trained to predict the corresponding letter.</p>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>Key features</h2>
+        <!-- TODO: list the main features -->
+        <ul class="project-features">
+            <li>Feature one.</li>
+            <li>Feature two.</li>
+            <li>Feature three.</li>
+        </ul>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>Tech stack</h2>
+        <div class="project-stack-grid">
+            <div class="project-stack-item">
+                <h3>Python</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>Sklearn</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>OpenCV</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>Mediapipe</h3>
+                <p>Why/how it was used.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>Gallery</h2>
+        <!-- TODO: add more screenshots -->
+        <div class="project-gallery">
+            <a href="../static/lis.png" target="_blank">
+                <img src="../static/lis.png" alt="Immagine Alfabeto LIS">
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Giovanni Bocchi, PhD Portfolio.</p>
+    </footer>
+
+    <script src="../static/js/shared.js"></script>
+</body>
+
+</html>

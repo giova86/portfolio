@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmos - Web Application — Giovanni Bocchi</title>
+    <meta name="description"
+        content="Cosmos is a multi AI agent web application built with a React front end and a FastAPI backend.">
+    <meta name="author" content="Giovanni Bocchi">
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Cosmos - Web Application — Giovanni Bocchi">
+    <meta property="og:description"
+        content="Cosmos is a multi AI agent web application built with a React front end and a FastAPI backend.">
+    <meta property="og:image" content="../static/Cosmos.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cosmos - Web Application — Giovanni Bocchi">
+    <meta name="twitter:description"
+        content="Cosmos is a multi AI agent web application built with a React front end and a FastAPI backend.">
+    <meta name="twitter:image" content="../static/Cosmos.png">
+
+    <!-- Favicon (inline SVG) -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0e16'/><text x='50' y='70' font-size='58' font-family='monospace' font-weight='700' text-anchor='middle' fill='%2338bdf8'>G</text></svg>">
+
+    <!-- PWA -->
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0a0e16">
+    <link rel="apple-touch-icon" href="../static/icons/apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="G. Bocchi">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Shared site styles (variables, nav, buttons, footer, animations) -->
+    <link rel="stylesheet" href="../static/css/shared.css">
+    <!-- Styles specific to project detail pages -->
+    <link rel="stylesheet" href="../static/css/project-detail.css">
+</head>
+
+<body>
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="../index.html#home" class="logo">Giovanni Bocchi</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html#about">About me</a></li>
+                <li><a href="../index.html#education">Education</a></li>
+                <li><a href="../index.html#experience">Experiences</a></li>
+                <li><a href="../index.html#projects">Projects</a></li>
+                <li><a href="../index.html#hobbies">Miscellanea</a></li>
+                <li><a href="../index.html#contact">Contacts</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <a href="../index.html#projects" class="project-detail-back fade-in">← Back to projects</a>
+
+    <section class="project-hero fade-in">
+        <img src="../static/Cosmos.png" alt="Immagine Cosmos" class="project-hero-image">
+        <div>
+            <h1>Cosmos - Web Application</h1>
+            <p class="project-tagline">Multi AI Agent</p>
+            <div class="project-tech">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Javascript</span>
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">FastAPI</span>
+                <span class="tech-tag">Ollama</span>
+                <span class="tech-tag">LM Studio</span>
+                <span class="tech-tag">OpenAI</span>
+                <span class="tech-tag">LLM</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>Overview</h2>
+        <p>Cosmos is a multi AI agent web application, built to coordinate several LLM-driven agents behind a single
+            interface.</p>
+        <p>The backend, written in Python with FastAPI, can talk to models served locally through Ollama and LM
+            Studio as well as through OpenAI, while a React front end provides the user-facing interface.</p>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>Key features</h2>
+        <!-- TODO: list the main features -->
+        <ul class="project-features">
+            <li>Feature one.</li>
+            <li>Feature two.</li>
+            <li>Feature three.</li>
+        </ul>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>Tech stack</h2>
+        <div class="project-stack-grid">
+            <div class="project-stack-item">
+                <h3>Python</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>Javascript</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>React</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>FastAPI</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>Ollama</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>LM Studio</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>OpenAI</h3>
+                <p>Why/how it was used.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>LLM</h3>
+                <p>Why/how it was used.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>Gallery</h2>
+        <!-- TODO: add more screenshots -->
+        <div class="project-gallery">
+            <a href="../static/Cosmos.png" target="_blank">
+                <img src="../static/Cosmos.png" alt="Immagine Cosmos">
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Giovanni Bocchi, PhD Portfolio.</p>
+    </footer>
+
+    <script src="../static/js/shared.js"></script>
+</body>
+
+</html>
