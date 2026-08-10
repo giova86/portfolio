@@ -136,11 +136,15 @@
     gap: 1rem;
 }
 
-.project-gallery a {
+.project-gallery-item {
     display: block;
+    width: 100%;
+    padding: 0;
+    background: none;
     border-radius: var(--radius);
     overflow: hidden;
     border: 1px solid var(--border);
+    cursor: pointer;
 }
 
 .project-gallery img {
@@ -151,8 +155,111 @@
     transition: transform 0.3s ease;
 }
 
-.project-gallery a:hover img {
+.project-gallery-item:hover img {
     transform: scale(1.05);
+}
+
+.gallery-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(4, 6, 10, 0.92);
+    padding: 2rem;
+}
+
+.gallery-lightbox.is-open {
+    display: flex;
+}
+
+.gallery-lightbox-image {
+    max-width: min(90vw, 1100px);
+    max-height: 85vh;
+    border-radius: var(--radius);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    object-fit: contain;
+}
+
+.gallery-lightbox-close,
+.gallery-lightbox-nav {
+    position: absolute;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--border);
+    color: #fff;
+    border-radius: 999px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.gallery-lightbox-close:hover,
+.gallery-lightbox-nav:hover {
+    background: var(--bg-elev-2);
+    border-color: var(--border-strong);
+    color: var(--brand);
+}
+
+.gallery-lightbox-close {
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.gallery-lightbox-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.gallery-lightbox-prev {
+    left: 1.25rem;
+}
+
+.gallery-lightbox-next {
+    right: 1.25rem;
+}
+
+.gallery-lightbox-counter {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 0.85rem;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+}
+
+@media (max-width: 600px) {
+    .gallery-lightbox {
+        padding: 1rem;
+    }
+
+    .gallery-lightbox-nav {
+        width: 42px;
+        height: 42px;
+        font-size: 1.6rem;
+    }
+
+    .gallery-lightbox-prev {
+        left: 0.5rem;
+    }
+
+    .gallery-lightbox-next {
+        right: 0.5rem;
+    }
 }
 
 @media (max-width: 768px) {

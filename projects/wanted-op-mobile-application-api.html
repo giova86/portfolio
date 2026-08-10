@@ -70,7 +70,7 @@
     <a href="../index.html#projects" class="project-detail-back fade-in">← Back to projects</a>
 
     <section class="project-hero fade-in">
-        <img src="../static/wantedopMobile.png" alt="Immagine Wanted OP - Mobile Application"
+        <img src="../static/wantedopMobile.png" alt="Wanted OP - Mobile Application"
             class="project-hero-image">
         <div>
             <h1>Wanted OP - Mobile Application + API</h1>
@@ -96,11 +96,12 @@
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
-        <!-- TODO: list the main features -->
         <ul class="project-features">
-            <li>Feature one.</li>
-            <li>Feature two.</li>
-            <li>Feature three.</li>
+            <li>Upload a photo from the gallery or take one directly with the camera.</li>
+            <li>Customize the poster with a name and a bounty amount.</li>
+            <li>Real-time preview of the generated poster.</li>
+            <li>Save the finished poster as an image to the device.</li>
+            <li>Intuitive interface inspired by the One Piece wanted-poster aesthetic.</li>
         </ul>
     </section>
 
@@ -109,31 +110,28 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Python</h3>
-                <p>Why/how it was used.</p>
+                <p>Backend language for the poster-generation service consumed by the app.</p>
             </div>
             <div class="project-stack-item">
                 <h3>FastAPI</h3>
-                <p>Why/how it was used.</p>
+                <p>Exposes the API that composes the uploaded photo, name, and bounty into the final poster
+                    image.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Dart</h3>
-                <p>Why/how it was used.</p>
+                <p>Application logic: state management and coordinating image picking, preview, and saving.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Flutter</h3>
-                <p>Why/how it was used.</p>
+                <p>Cross-platform UI for iPhone and Android, including the image picker, live poster preview, and
+                    screenshot/save flow.</p>
             </div>
         </div>
     </section>
 
     <section class="project-section fade-in">
         <h2>Gallery</h2>
-        <!-- TODO: add more screenshots -->
-        <div class="project-gallery">
-            <a href="../static/wantedopMobile.png" target="_blank">
-                <img src="../static/wantedopMobile.png" alt="Immagine Wanted OP - Mobile Application">
-            </a>
-        </div>
+        <div class="project-gallery" data-gallery="wanted-op-mobile-application-api"></div>
     </section>
 
     <footer>
@@ -141,6 +139,8 @@
     </footer>
 
     <script src="../static/js/shared.js"></script>
+    <script src="../static/gallery/wanted-op-mobile-application-api/images.js"></script>
+    <script src="../static/js/project-gallery.js"></script>
 </body>
 
 </html>

@@ -67,10 +67,10 @@
     <a href="../index.html#projects" class="project-detail-back fade-in">← Back to projects</a>
 
     <section class="project-hero fade-in">
-        <img src="../static/acaan.png" alt="Immagine Wanted OP - Mobile Application" class="project-hero-image">
+        <img src="../static/acaan.png" alt="ACAAN - Mobile Application" class="project-hero-image">
         <div>
             <h1>ACAAN - Mobile Application</h1>
-            <p class="project-tagline">Any Card At Any Number.</p>
+            <p class="project-tagline">Any Card At Any Number — a card-magic effect brought to your phone.</p>
             <div class="project-tech">
                 <span class="tech-tag">Dart</span>
                 <span class="tech-tag">Flutter</span>
@@ -81,17 +81,24 @@
     <section class="project-section fade-in">
         <h2>Overview</h2>
         <p>ACAAN — Any Card At Any Number — is a mobile application built around the classic card-magic effect of
-            the same name.</p>
-        <p>It is developed with Flutter and Dart, running as a cross-platform app on Android and iOS.</p>
+            the same name. The performer lets a spectator freely name a card and a number; the app then guides the
+            reveal so that exact card turns up at exactly that position in the deck.</p>
+        <p>The flow is fully gesture-driven: pick a suit and value from the closed deck, watch the cards scatter
+            across the screen, then drag and flip them until the chosen card magically appears under the first tap.
+            It is developed with Flutter and Dart, running as a cross-platform app on Android and iOS.</p>
     </section>
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
-        <!-- TODO: list the main features -->
         <ul class="project-features">
-            <li>Feature one.</li>
-            <li>Feature two.</li>
-            <li>Feature three.</li>
+            <li>Animated splash screen with smooth, professional-looking loading transitions.</li>
+            <li>Intuitive card selection: a 2×2 grid to pick the suit, then a 3×5 grid to pick the value.</li>
+            <li>Fluid animated transitions between the deck states and card movements.</li>
+            <li>Interactive card handling — double-tap to flip, drag &amp; drop to reposition, with a z-index
+                system to bring cards to the front.</li>
+            <li>Forced flip: the first card tapped after the scatter always reveals the selected card.</li>
+            <li>Responsive design that adapts to different screen sizes.</li>
+            <li>Customizable wallpaper for a personalized experience.</li>
         </ul>
     </section>
 
@@ -100,23 +107,20 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Dart</h3>
-                <p>Why/how it was used.</p>
+                <p>Application logic: deck state management, card positioning via <code>Offset</code> coordinates,
+                    z-index reordering for card stacking, and gesture handling.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Flutter</h3>
-                <p>Why/how it was used.</p>
+                <p>Cross-platform UI framework for Android and iOS — drives the splash screen, deck/card widgets,
+                    flip and scatter animations, and drag gestures.</p>
             </div>
         </div>
     </section>
 
     <section class="project-section fade-in">
         <h2>Gallery</h2>
-        <!-- TODO: add more screenshots -->
-        <div class="project-gallery">
-            <a href="../static/acaan.png" target="_blank">
-                <img src="../static/acaan.png" alt="Immagine Wanted OP - Mobile Application">
-            </a>
-        </div>
+        <div class="project-gallery" data-gallery="acaan-mobile-application"></div>
     </section>
 
     <footer>
@@ -124,6 +128,8 @@
     </footer>
 
     <script src="../static/js/shared.js"></script>
+    <script src="../static/gallery/acaan-mobile-application/images.js"></script>
+    <script src="../static/js/project-gallery.js"></script>
 </body>
 
 </html>

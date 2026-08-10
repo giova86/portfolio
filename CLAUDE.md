@@ -64,6 +64,43 @@ To give a project a detail page, copy `projects/_template.html` to
 `projects/<slug>.html` (the slug must match) and fill in the `<!-- TODO -->`
 placeholders. Until that file exists, clicking the card 404s.
 
+### Adding a project detail gallery
+
+Screenshots for a project's detail-page gallery live in
+`static/gallery/<slug>/`, one subfolder per project, named to match
+`projects/<slug>.html`. Keep only screenshots that show the app/tool in
+use — skip icons, build artifacts, and design source files (`.psd`, etc.).
+
+The gallery is populated automatically at runtime by
+`static/js/project-gallery.js`, which reads the file list from
+`window.__galleryImages[<slug>]` (set by
+`static/gallery/<slug>/images.js`, loaded via a plain `<script>` tag
+right before `project-gallery.js`). A manifest loaded as a `<script>`
+rather than `fetch()`-ed is deliberate: `fetch()` of a local JSON file
+fails under `file://` (no build step / no server means pages are often
+opened directly), while a `<script src>` tag still works. The detail
+page itself only needs an empty container plus the two script tags:
+
+```html
+<div class="project-gallery" data-gallery="<slug>"></div>
+...
+<script src="../static/gallery/<slug>/images.js"></script>
+<script src="../static/js/project-gallery.js"></script>
+```
+
+**After adding, removing, or renaming images in a gallery folder**, regenerate
+the manifests:
+
+```bash
+python3 scripts/generate_gallery_manifests.py
+```
+
+This scans every `static/gallery/<slug>/` folder and rewrites its
+`images.js` (sorted list of image filenames). If a folder is empty (or
+its manifest fails to load), the whole Gallery section is hidden on that
+page. The grid layout and hover zoom are handled by `.project-gallery`
+in `project-detail.css`.
+
 ### Adding a timeline entry
 
 Add a `.timeline-item` with alternating `.timeline-left` / `.timeline-right` class inside the relevant `.timeline` container. The vertical line is drawn by CSS `::after` on the `.timeline` parent.
@@ -71,6 +108,9 @@ Add a `.timeline-item` with alternating `.timeline-left` / `.timeline-right` cla
 ## Assets
 
 - `static/` — PNG screenshots for project cards, profile photo (`gbocchi3.png`), and the CV PDF (`CV_Giovanni_Bocchi_EN.pdf`).
+- `static/gallery/<slug>/` — per-project detail-page gallery screenshots plus a generated `images.js` manifest, see "Adding a project detail gallery" below.
+- `static/js/project-gallery.js` — reads `window.__galleryImages[<slug>]` and renders the thumbnails; linked only from `projects/*.html`.
+- `scripts/generate_gallery_manifests.py` — regenerates every gallery's `images.js` from the files present on disk.
 - `static/css/` — `shared.css` (every page) and `project-detail.css` (`projects/*.html` only).
 - `static/js/` — `shared.js` (every page).
 - Project card images are referenced directly in HTML `src` attributes; keep filenames lowercase with no spaces.
