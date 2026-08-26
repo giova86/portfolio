@@ -43,6 +43,9 @@
     --shadow-glow: 0 18px 45px rgba(56, 189, 248, 0.18);
     --maxw: 1200px;
     --space-section: clamp(4rem, 8vw, 7rem);
+    /* Footer height — also the bottom padding that keeps content clear of
+       the fixed footer on desktop. Keep the two in sync. */
+    --footer-h: 3.25rem;
 
     /* Back-compat aliases (legacy var names still referenced in places) */
     --primary-color: var(--brand);
@@ -63,6 +66,10 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Sticky footer: body always fills at least the viewport, so the
+       `position: sticky` footer below can be pushed down to its bottom. */
+    min-height: 100vh;
+    min-height: 100dvh;
 }
 
 ::selection {
@@ -286,12 +293,38 @@ nav.open .nav-toggle span:nth-child(3) {
 
 /* Footer */
 footer {
+    /* Mobile: anchored to the bottom of the viewport on short pages
+       (body is >= 100vh tall), in normal flow on long ones. */
+    position: sticky;
+    top: 100vh;
+    min-height: var(--footer-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--bg-darker);
     text-align: center;
-    padding: 2.5rem 1.5rem;
+    padding: 0.5rem 1.5rem;
     border-top: 1px solid var(--border);
     color: var(--text-faint);
     font-size: 0.9rem;
+}
+
+/* Desktop: always visible, pinned to the viewport bottom. `body`'s
+   bottom padding reserves the strip so nothing hides underneath. */
+@media (min-width: 769px) {
+    body {
+        padding-bottom: var(--footer-h);
+    }
+
+    footer {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        height: var(--footer-h);
+    }
 }
 
 /* Animations */

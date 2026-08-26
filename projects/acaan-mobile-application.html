@@ -80,25 +80,69 @@
 
     <section class="project-section fade-in">
         <h2>Overview</h2>
-        <p>ACAAN — Any Card At Any Number — is a mobile application built around the classic card-magic effect of
-            the same name. The performer lets a spectator freely name a card and a number; the app then guides the
-            reveal so that exact card turns up at exactly that position in the deck.</p>
-        <p>The flow is fully gesture-driven: pick a suit and value from the closed deck, watch the cards scatter
-            across the screen, then drag and flip them until the chosen card magically appears under the first tap.
-            It is developed with Flutter and Dart, running as a cross-platform app on Android and iOS.</p>
+        <p>ACAAN is a performance tool for close-up card magic, built around the classic "Any Card At Any Number"
+            plot. The phone stands in for a real deck: the performer secretly sets a target card, hands the device
+            to a spectator, and whatever they do with the cards, the first one they turn over is the target.</p>
+        <p>The secret is in the deck graphic itself. The closed deck is divided into an invisible 2×2 grid — one
+            quadrant per suit — and the open deck into an invisible 3×5 grid running from Ace to King. Two taps
+            that read as nothing more than handling the deck are enough to arm the effect, with no menus, no
+            typing and no tells on screen.</p>
+        <p>Once the deck is spread, all 52 cards become individually draggable and flippable objects. The
+            spectator can shuffle them around the screen, stack them and browse as long as they like: the force is
+            applied on the first flip, by swapping the tapped card's face with the target card and giving its old
+            face to the card that previously held the target — so the deck on screen always remains a legitimate
+            52-card deck with no duplicates.</p>
+        <p>It is built with Flutter and Dart as a single cross-platform codebase for Android and iOS, running
+            entirely offline from bundled assets.</p>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>How a performance runs</h2>
+        <ul class="project-features">
+            <li><strong>Setup</strong> — an animated splash screen plays while every theme's deck and card-back
+                images are pre-cached, so no asset ever pops in mid-performance.</li>
+            <li><strong>Choose the suit</strong> — one tap on a quadrant of the closed deck. Nothing on screen
+                changes except the deck opening, which reads as a natural handling move.</li>
+            <li><strong>Choose the value</strong> — the open deck hides a 3×5 grid; a second tap picks the rank.
+                Depending on the configured exit mode, the deck then leaves the screen on a tap or is dragged
+                away with a downward swipe that doubles as the rank selection.</li>
+            <li><strong>Hand it over</strong> — the cards spread into a loose pile, each with a small random
+                offset and tilt. The spectator drags, stacks and browses freely; every touched card lifts,
+                scales and comes to the front of the stack.</li>
+            <li><strong>The reveal</strong> — the first flip, single- or double-tap depending on the setting,
+                turns up the target card with a 3D rotation.</li>
+            <li><strong>Reset</strong> — one button gathers the cards back to centre, then reshuffles a fresh
+                deck ready for the next spectator.</li>
+        </ul>
     </section>
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
         <ul class="project-features">
-            <li>Animated splash screen with smooth, professional-looking loading transitions.</li>
-            <li>Intuitive card selection: a 2×2 grid to pick the suit, then a 3×5 grid to pick the value.</li>
-            <li>Fluid animated transitions between the deck states and card movements.</li>
-            <li>Interactive card handling — double-tap to flip, drag &amp; drop to reposition, with a z-index
-                system to bring cards to the front.</li>
-            <li>Forced flip: the first card tapped after the scatter always reveals the selected card.</li>
-            <li>Responsive design that adapts to different screen sizes.</li>
-            <li>Customizable wallpaper for a personalized experience.</li>
+            <li><strong>Invisible selection grids</strong> — suit and rank are picked by hit-testing the touch
+                position against the deck image's own geometry (2×2 closed, 3×5 open), so the interface that
+                arms the trick is completely unmarked.</li>
+            <li><strong>Undetectable force</strong> — the target face is swapped in on the first flip and traded
+                with the card that already held it, keeping the deck internally consistent if the spectator
+                turns over every remaining card.</li>
+            <li><strong>Two deck-exit modes</strong> — tap-to-exit or drag-to-exit, the latter letting the
+                performer pick the rank and slide the deck away in a single continuous gesture. The choice is
+                saved between sessions.</li>
+            <li><strong>38 card themes</strong> — deck, open deck and card back are all driven by a filename
+                suffix declared in a JSON manifest, so a new theme is three images and one entry, with no code
+                changes. Themes are browsed through a scaling carousel and the selection persists across
+                restarts.</li>
+            <li><strong>Tunable handling</strong> — flip on single tap (fast) or double tap (safe against
+                accidental reveals), plus a flip-duration slider from 0.5 s to 5 s to match the pace of the
+                routine.</li>
+            <li><strong>Physical card feel</strong> — a perspective 3D flip with an overshoot curve, a scale
+                bump through the turn, a lift on drag, and shadows whose opacity, blur and spread track how far
+                the card is "off the table".</li>
+            <li><strong>Built-in bilingual guide</strong> — a five-step illustrated walkthrough of the routine,
+                available in Italian and English through an in-app language toggle.</li>
+            <li><strong>Performance-safe presentation</strong> — portrait lock, immersive full-screen tuned to
+                the device's Android navigation mode, asset re-caching when the app returns from background, and
+                a fallback placeholder behind every image so a missing asset can never break a show.</li>
         </ul>
     </section>
 
@@ -107,13 +151,35 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Dart</h3>
-                <p>Application logic: deck state management, card positioning via <code>Offset</code> coordinates,
-                    z-index reordering for card stacking, and gesture handling.</p>
+                <p>Drives the deck state machine (<code>inDeck → deckOpening → open → scrollingOut →
+                        gathering</code>), the hit-testing that turns a touch <code>Offset</code> into a suit or
+                    rank, the face-swap that applies the force, and the list reordering used as a z-index for
+                    card stacking.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Flutter</h3>
-                <p>Cross-platform UI framework for Android and iOS — drives the splash screen, deck/card widgets,
-                    flip and scatter animations, and drag gestures.</p>
+                <p>Renders the splash screen, deck and 52 card widgets. <code>AnimatedPositioned</code> and
+                    <code>AnimatedRotation</code> handle the spread and gather; <code>Matrix4</code> with a
+                    perspective entry and <code>rotateY</code> handles the flip; layered
+                    <code>AnimationController</code>s combine the flip, scale and drag-lift effects.
+                    <code>GlobalKey</code>s keep each card's animation state alive as the stack is reordered.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>JSON theme manifest</h3>
+                <p>A bundled <code>themes.json</code> is parsed at startup into typed <code>CardThemeConfig</code>
+                    objects that derive their three asset paths from a suffix, with an optional per-theme card-back
+                    override. This is what keeps 38 themes maintainable as data rather than code.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>shared_preferences</h3>
+                <p>Persists the performer's setup — the selected card theme and the deck exit mode — so the app
+                    reopens configured exactly as it was left.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>Kotlin platform channel</h3>
+                <p>A <code>navigation_mode_channel</code> <code>MethodChannel</code> reports whether the Android
+                    device uses gesture or three-button navigation, so the app picks the immersive system-UI mode
+                    that keeps the deck full-screen without the system bars intruding.</p>
             </div>
         </div>
     </section>

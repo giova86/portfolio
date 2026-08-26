@@ -90,20 +90,72 @@
 
     <section class="project-section fade-in">
         <h2>Overview</h2>
-        <p>Alfabeto LIS is a machine learning application that recognises letters of the Italian Sign Language (LIS)
-            alphabet from hand shape. It detects the user's right hand through the webcam and classifies the sign
-            being made.</p>
-        <p>The pipeline extracts hand landmarks with Mediapipe, derives the main features from them with OpenCV, and
-            feeds those features into a Sklearn model trained to predict the corresponding letter.</p>
+        <p>Alfabeto LIS recognises letters of the Italian Sign Language (LIS) alphabet from a single webcam frame.
+            It watches the user's right hand, classifies the static shape it is making, and reports the predicted
+            letter together with a full confidence breakdown across every letter in the alphabet.</p>
+        <p>Because the classifier works frame by frame rather than over a sequence, only signs that hold a static
+            shape can be recognised: the LIS letters G, J, S and Z all rely on in-air motion to be distinguished, so
+            they are deliberately left out of the dataset and the model's label set, leaving 22 letters.</p>
+        <p>Each frame goes through the same feature pipeline everywhere it is used. Mediapipe's Holistic model
+            locates the 21 3D landmarks of the right hand; the x and y coordinates are then min-max normalised
+            against the hand's own bounding box, so the prediction is invariant to how close the hand is to the
+            camera or where it sits in the frame. The resulting 63-value vector (21 landmarks × x, y, z) is what
+            the Sklearn model actually sees — never the raw image.</p>
+        <p>The project exists in three layers built up over time: a set of command-line Python scripts
+            (<code>rh_dataset_collection.py</code>, <code>train_svm.py</code>, <code>real_time_prediction.py</code>)
+            that collect data, train the classifier and run it live against a webcam in an OpenCV window; a public
+            Streamlit demo that puts the same trained model in the browser with no local setup; and a rebuilt
+            React + FastAPI web app that streams webcam frames to a Python backend over a WebSocket for lower-latency,
+            more interactive real-time inference. The desktop OpenCV interface was later restyled with the same
+            ink-and-amber viewfinder and confidence-spectrum sidebar as the React app, so all three keep a consistent
+            look despite running on different stacks.</p>
+    </section>
+
+    <section class="project-section fade-in">
+        <h2>How the prediction pipeline works</h2>
+        <ul class="project-features">
+            <li><strong>Capture</strong> — a frame is read from the webcam (or, in the web app, drawn to a canvas
+                and sent as a base64 JPEG) without horizontal flipping, so the user's right hand is never mirrored
+                into a left hand.</li>
+            <li><strong>Detect</strong> — Mediapipe's Holistic solution processes the frame and returns landmarks
+                for face, pose and both hands; only <code>right_hand_landmarks</code> is used, so a frame is
+                skipped whenever the right hand isn't visible.</li>
+            <li><strong>Normalise</strong> — the 21 landmarks' x and y coordinates are rescaled against the hand's
+                own bounding box (<code>(v - min) / (max - min)</code>), and flattened with z into a 63-feature
+                vector — the same normalisation used both at training time and at inference time.</li>
+            <li><strong>Classify</strong> — an SVM trained with <code>scikit-learn</code>'s <code>SVC(probability=True)</code>
+                predicts the most likely letter and returns a full probability distribution over all 22 classes.</li>
+            <li><strong>Report</strong> — the top prediction, its confidence and the complete per-letter probability
+                spectrum are rendered back to the user, whether as an OpenCV overlay, a Streamlit widget or JSON
+                pushed down the WebSocket to the React UI.</li>
+        </ul>
     </section>
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
-        <!-- TODO: list the main features -->
         <ul class="project-features">
-            <li>Feature one.</li>
-            <li>Feature two.</li>
-            <li>Feature three.</li>
+            <li><strong>Real-time right-hand recognition</strong> — Mediapipe Holistic tracks the hand every frame
+                with configurable detection/tracking confidence thresholds, so the system keeps working under
+                varying lighting and hand distance.</li>
+            <li><strong>Full confidence spectrum, not just a label</strong> — every prediction ships the
+                probability for all 22 letters, not only the winner, letting the UI show how close a sign was to
+                being confused with another (e.g. similarly-shaped letters).</li>
+            <li><strong>Three interchangeable front ends</strong> — the same trained SVM model powers a desktop
+                OpenCV app, a public Streamlit web demo, and a React single-page app, without retraining or
+                changing the feature pipeline.</li>
+            <li><strong>WebSocket-driven React app</strong> — the browser streams JPEG frames to a FastAPI backend
+                over a single persistent WebSocket at up to ~12 fps, throttled by waiting for the backend's reply
+                before sending the next frame so the connection never backs up under load.</li>
+            <li><strong>Reproducible data collection &amp; training</strong> — <code>rh_dataset_collection.py</code>
+                walks through each letter with an on-screen countdown and records normalised landmark vectors to a
+                CSV per class; <code>train_svm.py</code> then retrains and re-saves the model with a single command,
+                reporting train/test accuracy.</li>
+            <li><strong>Configurable at the command line</strong> — sample counts, detection/tracking confidence
+                thresholds, the prediction threshold, and input/output file paths are all exposed as CLI flags
+                across the collection, training and real-time scripts.</li>
+            <li><strong>Live hand-detection feedback</strong> — every interface (OpenCV overlay, React viewfinder)
+                shows an explicit "hand detected / searching" indicator, so the user knows whether a missing
+                prediction means "no sign recognised" or "hand not visible."</li>
         </ul>
     </section>
 
@@ -112,19 +164,47 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Python</h3>
-                <p>Why/how it was used.</p>
+                <p>The core of the project: the data-collection, training and real-time-prediction scripts, the
+                    shared <code>utils.py</code> feature-extraction helpers, and the FastAPI backend are all plain
+                    Python built on the same normalisation logic.</p>
             </div>
             <div class="project-stack-item">
-                <h3>Sklearn</h3>
-                <p>Why/how it was used.</p>
-            </div>
-            <div class="project-stack-item">
-                <h3>OpenCV</h3>
-                <p>Why/how it was used.</p>
+                <h3>Scikit-learn</h3>
+                <p>Trains and serves the classifier: an <code>SVC(probability=True)</code> Support Vector Machine
+                    fit on the collected landmark dataset with <code>train_test_split</code>, then pickled to disk
+                    and loaded unchanged by every front end (OpenCV, Streamlit, FastAPI).</p>
             </div>
             <div class="project-stack-item">
                 <h3>Mediapipe</h3>
-                <p>Why/how it was used.</p>
+                <p>Its <code>Holistic</code> solution is what turns a raw frame into 21 3D right-hand landmarks per
+                    frame — the single input every other layer of the pipeline (normalisation, training,
+                    inference) is built around.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>OpenCV</h3>
+                <p>Handles all image I/O and rendering on the desktop app: reading webcam frames, colour-space
+                    conversion for Mediapipe, and drawing the ink-and-amber viewfinder, hand-detection tag and
+                    confidence-spectrum sidebar directly onto the video feed.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>FastAPI &amp; WebSockets</h3>
+                <p>The React app's backend: a single <code>/ws</code> WebSocket endpoint decodes each incoming
+                    base64 JPEG, runs it through Mediapipe and the SVM, and streams back a JSON payload with the
+                    hand-detection flag, the predicted letter, its confidence and the full per-letter probability
+                    map.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>React</h3>
+                <p>Drives the webcam capture loop and the live UI: a <code>Camera</code> component grabs frames onto
+                    a hidden canvas and gates the send rate on the backend's last reply, while a
+                    <code>PredictionSidebar</code> renders every letter as an animated confidence bar, highlighting
+                    the current top prediction.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>Streamlit</h3>
+                <p>Serves the trained model as a public, install-free web demo, so the classifier can be tried
+                    directly in the browser without running the Python scripts or the React/FastAPI stack
+                    locally.</p>
             </div>
         </div>
     </section>

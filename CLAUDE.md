@@ -27,7 +27,15 @@ pages.
 - **`static/css/shared.css`** — CSS shared by every page: `:root` custom
   properties (`--brand`, `--bg`, `--gradient`, etc.), reset, the animated
   background, nav, `.card-button`, footer, and `.fade-in` transitions.
-  Site-wide theme changes (colors, fonts) go here.
+  Site-wide theme changes (colors, fonts) go here. The footer is
+  `position: fixed` at the viewport bottom from 769px up (always visible),
+  and `position: sticky; top: 100vh` below that — anchored to the bottom on
+  short pages, in normal flow on long ones. Its height is `--footer-h`,
+  which desktop also uses as `body`'s `padding-bottom` so content never
+  hides under the fixed strip; change the two together. Do **not** make
+  `body` a flex container to anchor the footer: several body-level blocks
+  center with `max-width` + `margin: … auto` and no `width`, and as flex
+  items they collapse to their content width.
 - **`static/css/project-detail.css`** — CSS used only by `projects/*.html`:
   hero banner, overview/features/tech-stack/gallery sections. Not linked
   from `index.html`.
