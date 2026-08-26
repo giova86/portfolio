@@ -90,19 +90,35 @@
 
     <section class="project-section fade-in">
         <h2>Overview</h2>
-        <p>Dr. Strange is a computer vision project that brings the magical shields from the Marvel films to life,
-            generating real-time interactive shield effects that respond to the user in front of the camera.</p>
-        <p>It combines OpenCV for real-time video processing with an SVM classifier built with Sklearn to
-            recognise the gestures or hand positions that trigger the shield effect.</p>
+        <p>Dr. Strange Shield turns a webcam into a virtual camera that overlays the Sorcerer Supreme's mystical
+            shields onto your hands in real time, so the effect can be used live in any video-conferencing app
+            (Zoom, Meet, Teams) through OBS Studio's virtual camera device.</p>
+        <p>A MediaPipe HandLandmarker tracks both hands frame by frame, extracting 21 3D landmarks per hand. Their
+            normalized coordinates are fed into an SVM classifier trained with Scikit-learn, which recognises a
+            short sequence of hand poses (three "keys") used to arm the effect and a fourth pose used to dismiss
+            it &mdash; mirroring the ritual, deliberate gesture Doctor Strange performs before summoning a shield.</p>
+        <p>Once armed, OpenCV composites a chroma-keyed shield video onto each hand, resizing and repositioning it
+            every frame based on the hand's bounding box so it stays anchored and scaled correctly as the hand
+            moves, rotates, or changes distance from the camera.</p>
     </section>
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
-        <!-- TODO: list the main features -->
         <ul class="project-features">
-            <li>Feature one.</li>
-            <li>Feature two.</li>
-            <li>Feature three.</li>
+            <li>Real-time two-hand tracking via MediaPipe's HandLandmarker task, extracting 21 3D landmarks per
+                hand at live webcam frame rates.</li>
+            <li>Gesture-sequence "spell casting": an SVM classifier recognises three hand poses in sequence
+                (key_1 &rarr; key_2 &rarr; key_3) to activate the shields, and a fourth pose (key_4) to dismiss
+                them, each gated by a configurable confidence threshold.</li>
+            <li>Chroma-keyed shield video composited independently onto each hand, dynamically resized and
+                repositioned frame-by-frame to track the hand's position, size, and edge clipping at the frame
+                boundary.</li>
+            <li>Two shields can be summoned simultaneously, one per hand, exactly as in the source material.</li>
+            <li>Virtual webcam output via <code>pyvirtualcam</code> and the OBS Studio virtual camera backend, so
+                the composited feed can be selected as the camera source in any conferencing app.</li>
+            <li>Configurable via CLI flags: camera device id, detection/tracking confidence, prediction
+                threshold, shield video path, and output mode (preview window, virtual camera, or both).</li>
+            <li>Live in-terminal status line showing shield state and gesture-key progress while the app runs.</li>
         </ul>
     </section>
 
@@ -111,19 +127,33 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Python</h3>
-                <p>Why/how it was used.</p>
+                <p>Glues together video capture, hand-pose classification, frame compositing, and the virtual
+                    camera output into a single real-time loop.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>MediaPipe</h3>
+                <p>Provides the HandLandmarker task used for two-hand detection, returning 21 3D landmarks per
+                    hand every frame &mdash; the basis for both the gesture classifier and the shield anchoring.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Sklearn</h3>
-                <p>Why/how it was used.</p>
+                <p>Used to train and load the SVM model on normalized hand-landmark coordinates, and to expose
+                    per-class prediction probabilities for confidence-gated gesture recognition.</p>
             </div>
             <div class="project-stack-item">
                 <h3>SVM</h3>
-                <p>Why/how it was used.</p>
+                <p>The classifier itself: a support vector machine trained to recognise the four hand poses
+                    (three "keys" plus a dismiss gesture) that drive the shield state machine.</p>
             </div>
             <div class="project-stack-item">
                 <h3>OpenCV</h3>
-                <p>Why/how it was used.</p>
+                <p>Handles webcam capture, chroma-key masking of the shield video against a black background, and
+                    per-frame alpha compositing onto the live hand region.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>pyvirtualcam</h3>
+                <p>Streams the composited output frames to the OBS Studio virtual camera device, exposing the
+                    effect as a selectable webcam in third-party video-call software.</p>
             </div>
         </div>
     </section>

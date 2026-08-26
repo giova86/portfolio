@@ -83,19 +83,62 @@
 
     <section class="project-section fade-in">
         <h2>Overview</h2>
-        <p>The Mentalist is a mobile app designed to help its user perform mind-reading tricks, psychological
-            illusions, and predictions during live performances, using the phone as a discreet prop.</p>
-        <p>It was built with Flutter, aiming for a smooth, unobtrusive interface that keeps the focus on the
-            performance rather than the app itself.</p>
+        <p>The Mentalist turns a phone into a secret prop for a classic "any card you name" mentalism routine.
+            On the surface it just shows a playing card that flips over on tap &mdash; but underneath is a
+            performer-only control panel: the magician can silently force <em>any</em> rank and suit onto the
+            reveal, or disguise the phone entirely as an idle lock screen (fake clock, fake battery percentage,
+            fake airplane-mode/Wi-Fi-off icons) so a spectator glancing at it sees nothing suspicious.</p>
+        <p>It's a single-screen Flutter app built around one <code>StatefulWidget</code>
+            (<code>MagicCardScreen</code>) and a custom <code>CardWidget</code> that renders a 3D card-flip using
+            raw <code>Matrix4</code> transforms rather than an animation package. A normal picker lets the
+            magician openly set the card and its back design before a trick. A second, hidden control &mdash;
+            reachable only via a long-press gesture &mdash; unlocks "Secret Mode", where taps on specific regions
+            of the card's own back silently redefine what the "reveal" shows next.</p>
+        <p>The core design problem was making the secret input channel invisible without making it unusable in
+            practice: a spectator must never see a menu or a tell, but the magician needs to reliably hit one of
+            fifteen invisible zones on a card they're holding, under performance pressure. The app solves this
+            with a debug overlay (also long-press-gated) that draws the invisible grid and highlights the last
+            tapped cell, letting the magician rehearse the exact hand position for each rank until it's muscle
+            memory.</p>
     </section>
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
-        <!-- TODO: list the main features -->
         <ul class="project-features">
-            <li>Feature one.</li>
-            <li>Feature two.</li>
-            <li>Feature three.</li>
+            <li>3D card-flip reveal: a <code>Transform</code> with a manually-set perspective entry
+                (<code>setEntry(3, 2, 0.001)</code>) rotates the card 0&ndash;π on the Y axis over 2.5 seconds,
+                swapping from the back face to a counter-rotated front face at the halfway point so the artwork
+                never appears mirrored.</li>
+            <li>Open card picker: a bottom-sheet <code>CardPicker</code> lets the magician choose any of the 13
+                ranks (including both jokers) and 4 suits as chips, plus a <code>CardBackPicker</code> to swap
+                between four card-back designs &mdash; used for the honest, "no trick here" setup phase.</li>
+            <li>Secret Mode: a long press on the "Imposta Carta" button silently arms a hidden input mode with no
+                visible UI change, so the spectator has no reason to suspect anything just happened.</li>
+            <li>Invisible 3&times;5 rank grid on the card back: once Secret Mode is armed, tapping one of fifteen
+                regions on the card's own back (mapped in a <code>row,col &rarr; rank</code> table covering A
+                through K plus both jokers) sets the rank that will be revealed &mdash; the magician "reads" the
+                card by touch alone while appearing to just be holding it.</li>
+            <li>Clock-driven suit selection: in Secret Mode the suit is derived from the unit digit of the
+                device's current second at the moment of the tap (1&ndash;2&rarr;hearts, 3&ndash;4&rarr;diamonds,
+                5&ndash;6&rarr;clubs, 7&ndash;8&rarr;spades), turning the visible on-screen clock into a second,
+                independent secret channel timed to the performer's own tap.</li>
+            <li>Debug grid overlay: a separate long press on the fake battery icon toggles a
+                <code>CustomPainter</code> overlay that draws the 3&times;5 grid lines and highlights the last
+                tapped cell in green &mdash; purely a rehearsal aid, meant to be off during an actual
+                performance.</li>
+            <li>Disguised status bar: a fully custom top bar fakes a phone's real status indicators &mdash; a
+                live <code>HH:mm:ss</code> clock, airplane-mode and Wi-Fi-off icons, and a battery percentage that
+                even ticks from 68% to 86% once Secret Mode is armed, reinforcing the illusion that the phone is
+                just sitting idle.</li>
+            <li>Animated splash screen: a 2.5s intro plays a circular progress sweep, scale/opacity tweens, and a
+                color transition into the app's blue-grey theme before handing off to the main screen with a
+                cross-fade.</li>
+            <li>Immersive, orientation-locked full screen: the app forces portrait-only orientation and
+                immersive-sticky system UI (with a platform channel to detect Android's gesture vs. button
+                navigation mode) so no OS chrome breaks the disguise.</li>
+            <li>Responsive card sizing: a <code>LayoutBuilder</code> computes the largest card size that fits the
+                available space while preserving the standard 5:7 playing-card aspect ratio, so the layout holds
+                up across phone sizes.</li>
         </ul>
     </section>
 
@@ -104,11 +147,18 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Dart</h3>
-                <p>Why/how it was used.</p>
+                <p>Implements the entire trick logic: the row/column-to-rank lookup table for the secret grid,
+                    the seconds-unit-digit-to-suit mapping, the tap-region math that turns a raw
+                    <code>TapDownDetails</code> position into a grid cell, and the state machine coordinating the
+                    picker, Secret Mode, and Debug Mode without ever leaking a visible cue.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Flutter</h3>
-                <p>Why/how it was used.</p>
+                <p>Drives the 3D flip with hand-built <code>Matrix4</code>/<code>Transform</code> perspective
+                    rather than a package, paints the debug grid and tapped-cell highlight with a custom
+                    <code>CustomPainter</code>, and uses <code>SystemChrome</code> plus a
+                    <code>MethodChannel</code> to lock orientation and immersive full-screen mode across Android's
+                    different navigation styles.</p>
             </div>
         </div>
     </section>

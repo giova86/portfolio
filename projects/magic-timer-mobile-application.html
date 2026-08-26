@@ -83,20 +83,58 @@
 
     <section class="project-section fade-in">
         <h2>Overview</h2>
-        <p>Magic Timer is a small, puzzle-like mobile app built around a single trick: no matter when you stop it,
-            the displayed minutes, seconds, and milliseconds always add up to the same fixed sum, leaving whoever
-            tries it puzzled.</p>
-        <p>It's a lightweight Flutter app built as a fun demonstration piece rather than a full-featured
-            utility.</p>
+        <p>Magic Timer is a Flutter stopwatch dressed up as a mentalist trick: whenever it is stopped, the
+            displayed minutes, seconds and centiseconds are quietly rewritten so their sum always equals the
+            same target value &mdash; 42 by default. The performer starts and stops the watch normally, but the
+            instant it stops, only the centiseconds field is recalculated to force the total, so the trick reads
+            as an impossible coincidence rather than a rigged number.</p>
+        <p>The shell around the trick is a faithful, dark-themed mock-up of Apple's Clock app: a splash screen
+            that fades into a four-tab layout (World Clock, Alarm, Stopwatch, Timer), with only the Stopwatch tab
+            wired up &mdash; the other three are deliberately left as placeholders, since they exist purely to
+            sell the "real clock app" illusion the trick depends on.</p>
+        <p>The target sum and whether the custom calculation is even active are both configurable and persisted
+            across launches with <code>shared_preferences</code>: a long press on the time display opens a
+            settings dialog to change the target, while the trick itself can be silently toggled on or off with
+            the phone's volume-down button &mdash; no UI, no visible tell &mdash; so a performer can switch
+            between "honest" and "magic" mode mid-routine.</p>
     </section>
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
-        <!-- TODO: list the main features -->
         <ul class="project-features">
-            <li>Feature one.</li>
-            <li>Feature two.</li>
-            <li>Feature three.</li>
+            <li>Fixed-sum trick: on stop, minutes and seconds are read from the real elapsed time and the
+                centiseconds are recomputed as <code>target &minus; minutes &minus; seconds</code>, with
+                wrap-around handling for negative or over-99 results, so minutes + seconds + centiseconds always
+                equals the configured target (42 by default).</li>
+            <li>Hidden on/off switch: pressing the device's volume-down key (captured via
+                <code>RawKeyboard</code>, no on-screen control) silently toggles the custom calculation, letting
+                a performer alternate between a genuinely accurate stopwatch and the rigged one without the
+                audience noticing anything changed.</li>
+            <li>Configurable target sum: a long press on the timer display opens a <code>Settings</code> dialog
+                to type in a new target value, saved immediately so the next stop uses it.</li>
+            <li>Persistent preferences: both the target sum and the enabled/disabled state of the trick are
+                stored with <code>shared_preferences</code>, so they survive an app restart instead of resetting
+                to the default every time.</li>
+            <li>Lap history: every time the watch is stopped, the (possibly rigged) time is pushed onto a lap
+                list rendered below the controls, with alternating row shading and lap numbers counting down from
+                the most recent; starting again after a rigged stop clears the laps and resets the stopwatch.</li>
+            <li>Context-aware controls: the Reset button is disabled until there is something to reset (the
+                watch is running, has recorded laps, or shows non-zero time), and Start/Stop swaps color and
+                label (green "Start" / red "Stop") to mirror iOS's own stopwatch affordances.</li>
+            <li>Two-dot status indicator next to the controls that silently shows, at a glance, whether the
+                fixed-sum trick is currently armed &mdash; useful for the performer, invisible as a "tell" to
+                anyone else since it reads as generic UI chrome.</li>
+            <li>Animated splash screen: a 2.5s <code>AnimationController</code> drives a growing circular
+                progress ring, a scale-in with an elastic bounce, a fade-in stopwatch icon and title, and a
+                color tween from light to full orange, before cross-fading into the main app.</li>
+            <li>Full Clock-app shell for cover: a bottom <code>BottomNavigationBar</code> with World Clock,
+                Alarm, Stopwatch and Timer tabs backed by a <code>TabController</code>, with swiping disabled so
+                the illusion of a normal system clock app holds together even though only Stopwatch has real
+                content behind it.</li>
+            <li>Locked portrait orientation with edge-to-edge system UI: a native <code>MethodChannel</code>
+                asks the Android side whether the device uses gesture or 3-button navigation and picks
+                <code>SystemUiMode.manual</code> (bottom overlay only) or <code>immersiveSticky</code>
+                accordingly, so the stopwatch never gets pushed around by the nav bar reappearing.</li>
         </ul>
     </section>
 
@@ -105,11 +143,32 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Dart</h3>
-                <p>Why/how it was used.</p>
+                <p>Implements the whole trick as a single <code>StatefulWidget</code>: the real
+                    <code>Stopwatch</code>/<code>Timer.periodic</code> tick loop, the fixed-sum recalculation
+                    and its wrap-around edge cases, the lap list, the hidden volume-key toggle via
+                    <code>RawKeyboard</code>, and the splash screen's tween/curve choreography &mdash; all with
+                    plain <code>dart:async</code>, no external state-management package.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Flutter</h3>
-                <p>Why/how it was used.</p>
+                <p>Builds the iOS Clock-style shell with <code>TabController</code> /
+                    <code>BottomNavigationBar</code>, renders the tabular-figure time display with
+                    <code>FontFeature.tabularFigures()</code> so digits don't jitter as they update, and drives
+                    the splash animation with <code>AnimationController</code> plus
+                    <code>CurvedAnimation</code>/<code>Tween</code> combinations (elastic scale, eased opacity,
+                    color interpolation).</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>shared_preferences</h3>
+                <p>Persists the two pieces of user-configurable state &mdash; the target sum and whether the
+                    fixed-sum calculation is enabled &mdash; to local key-value storage, loading them back on
+                    startup so the performer's setup carries over between sessions.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>Platform channel (Android)</h3>
+                <p>A native <code>MethodChannel</code> ("navigation_mode_channel") queries the Android side for
+                    the active navigation mode at startup, so the app can choose the system UI overlay mode that
+                    keeps the stopwatch full-screen regardless of gesture or button navigation.</p>
             </div>
         </div>
     </section>

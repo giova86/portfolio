@@ -83,20 +83,53 @@
 
     <section class="project-section fade-in">
         <h2>Overview</h2>
-        <p>Magic Calculator looks like an ordinary calculator, but no matter what numbers or operations are entered,
-            it always returns the same result — a small trick app designed to surprise and puzzle whoever tries
-            it.</p>
-        <p>It's a lightweight Flutter app built as a fun demonstration piece rather than a functional calculator
-            utility.</p>
+        <p>Magic Calculator looks and behaves like a fully working dark-mode calculator &mdash; basic arithmetic,
+            percentages, sign changes, an animated splash screen &mdash; until its hidden "secret mode" is
+            switched on. From that point, pressing <code>=</code> stops evaluating the expression the player
+            typed and instead always returns a pre-configured number, no matter what was entered. It's a
+            magic-trick prop disguised as a utility app: to a bystander it's just a calculator, but the
+            performer can silently prime it to "predict" any number they choose in advance.</p>
+        <p>Secret mode is toggled by long-pressing the small dotted icon next to the "0" button; the icon itself
+            swaps between two glyphs (<code>⋱</code>/<code>⋰</code>) so the performer has a discreet visual
+            confirmation of which mode is active without giving it away to onlookers. The secret result is
+            configurable from a hidden dialog reachable by long-pressing the menu icon in the top-left corner,
+            and it's persisted across app restarts with <code>shared_preferences</code>.</p>
+        <p>Outside of the trick, the calculator is a genuinely complete single-screen Flutter app: it parses and
+            evaluates real arithmetic expressions with the <code>math_expressions</code> package, keeps a
+            running expression/result display that reflows its font size to the screen width, and formats very
+            large or very small results in scientific notation so they never overflow the display.</p>
     </section>
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
-        <!-- TODO: list the main features -->
         <ul class="project-features">
-            <li>Feature one.</li>
-            <li>Feature two.</li>
-            <li>Feature three.</li>
+            <li>Hidden "secret mode": long-pressing the <code>⋱</code> button toggles a mode where the
+                <code>=</code> button ignores the typed expression entirely and returns a fixed, pre-set
+                number instead of the real result &mdash; the core of the magic trick.</li>
+            <li>Configurable secret number: long-pressing the menu icon opens a dialog to set the number the
+                calculator "predicts" in secret mode, saved to disk with <code>shared_preferences</code> so it
+                survives app restarts.</li>
+            <li>Real arithmetic engine when not in secret mode: expressions are parsed and evaluated with the
+                <code>math_expressions</code> package, supporting addition, subtraction, multiplication,
+                division, percentages (<code>%</code>) and sign toggling (<code>+/-</code>).</li>
+            <li>Smart number formatting: results are capped at a fixed character budget, switching to
+                scientific notation for very large or very small values and trimming decimal places so long
+                numbers never overflow the display.</li>
+            <li>Responsive, fully proportional layout: button size, spacing and every font size are computed
+                from the screen width with <code>clamp()</code>, so the same layout adapts cleanly from small
+                phones to tablets.</li>
+            <li>Animated dark-themed splash screen: a circular progress ring, icon fade-in and color
+                transition are choreographed with a single <code>AnimationController</code> and staggered
+                <code>Interval</code> curves before handing off to the calculator screen with a cross-fade
+                transition.</li>
+            <li>Tactile button feedback: number and operator buttons lighten and lose their drop shadow on
+                <code>onTapDown</code>, giving a pressed-in feel that reverts on release or cancel.</li>
+            <li>Standard calculator conveniences: <code>AC</code> to clear everything, a context-sensitive
+                backspace that appears while typing, and consecutive-operator replacement (typing a second
+                operator swaps the last one instead of appending it).</li>
+            <li>Locked portrait orientation with immersive, edge-to-edge system UI, including a native
+                platform channel that detects Android's navigation mode (gesture vs. button bar) to pick the
+                correct system UI overlay.</li>
         </ul>
     </section>
 
@@ -105,11 +138,30 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Dart</h3>
-                <p>Why/how it was used.</p>
+                <p>Implements the calculator state machine as a single <code>StatefulWidget</code>: expression
+                    building, operator handling, the secret-mode switch, number formatting for scientific
+                    notation, and the splash-screen animation timeline, all with plain <code>dart:async</code>
+                    and no external state-management package.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Flutter</h3>
-                <p>Why/how it was used.</p>
+                <p>Renders the responsive button grid and display with <code>Row</code>/<code>Column</code>/
+                    <code>FittedBox</code>, drives the splash-screen ring, fade and color transitions with
+                    <code>AnimationController</code>/<code>Tween</code>/<code>CurvedAnimation</code>, and
+                    handles button press feedback and long-press gestures with custom
+                    <code>GestureDetector</code>-based button widgets. A native <code>MethodChannel</code>
+                    queries the Android navigation-bar mode at startup to choose the correct
+                    <code>SystemUiMode</code>.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>math_expressions</h3>
+                <p>Parses the typed arithmetic string into an expression tree and evaluates it in real mode
+                    whenever secret mode is off, powering the calculator's actual math.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>shared_preferences</h3>
+                <p>Persists the configurable secret number to local device storage, so the value set through
+                    the hidden dialog survives across app restarts.</p>
             </div>
         </div>
     </section>

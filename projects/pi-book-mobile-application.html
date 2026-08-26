@@ -83,20 +83,37 @@
 
     <section class="project-section fade-in">
         <h2>Overview</h2>
-        <p>Pi Book lets the user enter a number sequence and find where it first appears within the decimal
-            expansion of Pi. It's a small, playful tool aimed at math enthusiasts curious about the seemingly
-            random digits of Pi.</p>
-        <p>The app is built with Flutter, keeping the interface focused on entering a sequence and viewing its
-            position in the expansion.</p>
+        <p>Pi Book looks like an ordinary dark-themed calculator, but every number it computes is silently checked
+            against a million digits of π. Whenever the current expression or result exists somewhere in Pi's
+            decimal expansion, the app reveals it: an icon changes color, and a long press on the calculator button
+            reveals exactly where the sequence lives — as if Pi had been printed in a physical book, split into
+            pages, rows and columns.</p>
+        <p>The idea plays on the fact that Pi is (conjectured to be) a normal number: every finite digit sequence —
+            a birth date, a phone number, today's calculation — should appear in it somewhere. Pi Book turns that
+            curiosity into an interactive party trick hidden inside a fully working calculator.</p>
     </section>
 
     <section class="project-section fade-in">
         <h2>Key features</h2>
-        <!-- TODO: list the main features -->
         <ul class="project-features">
-            <li>Feature one.</li>
-            <li>Feature two.</li>
-            <li>Feature three.</li>
+            <li>Full four-function calculator (addition, subtraction, multiplication, division), plus percentage,
+                sign toggle, decimal input and backspace/all-clear — built on top of the <code>math_expressions</code>
+                shunting-yard parser rather than hand-rolled arithmetic.</li>
+            <li>Live Pi-sequence detection: after every keystroke the app strips the sign and decimal point from the
+                current expression or result and searches for it inside a bundled million-digit Pi dataset.</li>
+            <li>Visual "found in Pi" indicator that changes color the instant the current number is located inside
+                the expansion, with no extra tap required.</li>
+            <li>Long-press reveal on the calculator button: press and hold to see the sequence's exact position
+                expressed as a page, row and column — as if π were printed across pages of 48 rows × 60 digits.</li>
+            <li>A single tap toggles a persistent "book view", swapping the fake status bar's clock and battery
+                readout for the Pi page and row/position numbers, so the position stays on screen without holding
+                the button down.</li>
+            <li>A convincing disguise: the top bar mimics a real phone's status icons (Wi-Fi, signal, battery,
+                clock), so the Pi feature stays hidden until you know the long-press gesture.</li>
+            <li>Animated splash screen with a scaling, fading π mark inside a circular progress ring before handing
+                off to the calculator.</li>
+            <li>Dark theme throughout, locked to portrait orientation, with responsive button and font sizing based
+                on screen width so the layout holds up across phone sizes.</li>
         </ul>
     </section>
 
@@ -105,11 +122,24 @@
         <div class="project-stack-grid">
             <div class="project-stack-item">
                 <h3>Dart</h3>
-                <p>Why/how it was used.</p>
+                <p>Implements all app logic: expression state management, the Pi-sequence search over the bundled
+                    digit string, and the page/row/column math that turns a raw index into a "book" position.</p>
             </div>
             <div class="project-stack-item">
                 <h3>Flutter</h3>
-                <p>Why/how it was used.</p>
+                <p>Builds the entire UI — custom circular calculator buttons with press animations, the
+                    <code>AnimationController</code>-driven splash screen, and gesture handling (tap vs. long-press)
+                    on the calculator button that switches between the two Pi-reveal modes.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>math_expressions</h3>
+                <p>Dart package used to parse and evaluate calculator expressions via its shunting-yard parser,
+                    instead of writing a custom arithmetic evaluator.</p>
+            </div>
+            <div class="project-stack-item">
+                <h3>Platform channel (Android)</h3>
+                <p>A native <code>MethodChannel</code> queries the device's system navigation mode (gesture vs.
+                    button navigation) at startup, so the immersive UI hides the right system bars on each device.</p>
             </div>
         </div>
     </section>
