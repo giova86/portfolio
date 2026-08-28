@@ -155,6 +155,7 @@ nav.scrolled {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    white-space: nowrap;
 }
 
 .nav-links {
@@ -170,6 +171,7 @@ nav.scrolled {
     font-weight: 500;
     transition: color 0.3s ease;
     position: relative;
+    white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -225,7 +227,21 @@ nav.open .nav-toggle span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 1000px) {
+/* The 7-item nav (added by the Curriculum link) needs tighter spacing to
+   fit on one line between the hamburger breakpoint and where the default
+   2rem gap has room again. */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .nav-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .nav-links {
+        gap: 0.7rem;
+    }
+}
+
+@media (max-width: 768px) {
     .nav-toggle {
         display: flex;
     }
