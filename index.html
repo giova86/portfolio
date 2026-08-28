@@ -714,6 +714,14 @@
             margin-top: 2rem;
         }
 
+        /* Curriculum Section */
+        .curriculum-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         .hobby-card {
             background: var(--bg-elev);
             border-radius: var(--radius-lg);
@@ -1934,6 +1942,23 @@
                     improve and think ahead.</p>
                 <a href="https://www.chess.com/member/jtitor" class="card-button card-button-center"
                     target="_blank">Discover it</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="curriculum">
+        <h2 class="section-title fade-in">Curriculum</h2>
+        <div class="hobbies-grid">
+            <div class="hobby-card fade-in">
+                <span class="hobby-icon">📄</span>
+                <h3>Curriculum Vitae</h3>
+                <p>Download my CV in English or Italian.</p>
+                <div class="curriculum-buttons">
+                    <a href="static/CV_Giovanni_Bocchi_EN.pdf" target="_blank"
+                        download="CV_Giovanni_Bocchi_EN.pdf" class="cta-button">🇬🇧 Download CV (English)</a>
+                    <a href="static/CV_Giovanni_Bocchi_IT.pdf" target="_blank"
+                        download="CV_Giovanni_Bocchi_IT.pdf" class="cta-button-red">🇮🇹 Scarica CV (Italiano)</a>
+                </div>
             </div>
         </div>
     </section>
